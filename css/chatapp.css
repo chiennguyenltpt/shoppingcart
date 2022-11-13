@@ -1,0 +1,131 @@
+.chatapp{
+    width: 30vw;
+    height: 60vh;
+    position: fixed;
+    bottom: 20px;
+    right: 45px;
+    /* z-index: 11111111; */
+    /* visibility: visible; */
+    border-radius: 5px;
+    box-shadow: 2px 1px 2px rgb(78, 78, 235);
+    border: 1px solid rgb(18, 17, 1,.4);
+    display: flex;
+    flex-direction: column;
+   visibility: hidden;   
+   background-color: aliceblue;
+}
+.title-chatapp {
+    width: 100%;
+    height: 50px;
+    background-color: azure;
+    text-align: center;
+    line-height: 50px;
+    border-bottom: 1px solid rgb(22, 20, 20,.3);
+
+}
+
+.content {
+    position: relative;
+    width:100%;
+    height: 80%;
+    overflow: auto;
+    border-bottom:1px solid rgb(7, 7, 7,.4) ;
+    background-color: #fff;
+
+}
+/* .content::-webkit-scrollbar{
+    width: 10px; */
+/* }
+.content::-webkit-scrollbar-track{
+    background-color: cornsilk;
+}
+.content::-webkit-scrollbar-thumb{
+    background-color: rgba(13, 11, 11, 0.3);
+    border-radius:15px ; */
+/* } */
+.main-chat{
+    width: 95%;
+    
+    margin: 0 auto;
+}
+.sendmesage{
+    position: relative;
+    width: 100%;
+    height: calc(60vh - (83%) - 50px);
+    display: flex;
+    align-items: center;
+    background-color: aliceblue;
+}
+.sendmessage input{
+    height: 40px;
+    width: 100%;
+    top: 5px;
+    position: relative;
+    outline: none;
+}
+#icon-chatapp{
+    width: 10%;
+    height: 30px;
+    position: absolute;
+    bottom:10px ;
+    right: -2px;
+}
+
+
+.box .user {
+    position: relative;
+    left: calc(100% - max-content);
+    background-color: rgba(161, 160, 160, 0.2);
+    text-align: right;
+}
+
+.box p {
+    position: relative;
+     max-width: calc(50% - 30px) ;
+    min-height: 25px;
+    max-height: max-content;
+    background-color: rgb(144, 145, 144,.2);
+    width: max-content;
+    border-radius: 10px;
+    text-align: left;
+    word-wrap: break-word;
+    padding: 0 10px;
+    box-sizing: border-box;
+    
+
+}
+.box {
+    position: relative;
+    line-height: 25px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    /* border: 2px solid; */
+  }
+  
+  .box1 {
+    display: flex;
+    justify-content: end;
+  }
+
+
+   
+
+#img-user{
+    position: absolute;
+    width: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 40%;
+    margin-left: 10px;
+
+}
+.box1 p {
+    right: 35px;
+    top: 10px;
+}
+.box2 p {
+    left: 35px;
+    top: 10px;
+}
+
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/register.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/chatapp.css">
+    <link rel="stylesheet" href="./css/card.css">
+    <link rel="stylesheet" href="./css/resetEmail.css">
+    
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <div class="menu">
+            <ul>
+                <li><a ><i class="fa-brands fa-apple"></i></a></li>
+                <li><a  class="menu-item">Mac</a></li>
+                <li><a  class="menu-item">Ipad</a></li>
+                <li><a  class="menu-item">Iphone</a></li>
+                <li><a  class="menu-item">Watch</a></li>
+                <li><a  class="menu-item">Tv</a></li>
+                <li><a  id="search" onmouseover="hideNav()"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></a></li>      
+                <li><a ><i class="fa-solid fa-cart-shopping"></i><span>0</span></a></li>
+                <li> <img src="./image/avatar.jpeg" alt=""></li>
+                <li><a  class="menu-item" id="user"></a ></li> 
+                <li><a  class="menu-item" id="logout">Sign out</a></li>
+            
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="app">
+
+    </div>
+    
+</body>
+ 
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-database-compat.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script src="./js/component.js"></script>
+    <script src="./js/controller.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/model.js"></script>
+    <script src="./js/view.js"></script>
+
+</html>
