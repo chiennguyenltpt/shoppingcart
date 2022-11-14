@@ -62,7 +62,6 @@ view.setScreenAtive =(screenName)=>{
             // hien ten nguoi dung tren box chat
             document.getElementsByClassName('title-chatapp')[0].innerHTML += auth.currentUser.displayName
             var content_chatapp = document.getElementById('content')
-            content_chatapp.scrollTop = content_chatapp.scrollHeight
             // an enter viet chu
             document.querySelector('.sendmessage input').addEventListener('keydown' ,(e)=>{
                 if(e.key=='Enter'){
@@ -70,6 +69,7 @@ view.setScreenAtive =(screenName)=>{
                     controller.chatValue(inputValue.value);
                     view.addUserMessage(inputValue.value);
                     inputValue.value = ''
+                    content_chatapp.scrollTop = content_chatapp.scrollHeight;
                 }
                 
             });
@@ -87,7 +87,8 @@ view.setScreenAtive =(screenName)=>{
                     price:price[i].innerHTML,
                 }
                 document.querySelector('.menu ul li span').innerHTML=Number(document.querySelector('.menu ul li span').innerHTML)+1
-                controller.card(dataCard)
+                controller.card(dataCard);
+                
             })
             }
             // an hien thanh thong bao
@@ -99,15 +100,13 @@ view.setScreenAtive =(screenName)=>{
                 }else{
                     notice.style.visibility= 'hidden'
                 }
-            })
+            });
             // hien ra shopping  cart 
             let cart = document.getElementsByClassName('fa-cart-shopping')[0]
             cart.addEventListener('click',(e)=>{
                 e.preventDefault()
                 view.setScreenAtive("purchase");
-                // model.getShoppingValue()
-                
-            })
+            });
             break;
 
             // man dang ky
@@ -123,10 +122,10 @@ view.setScreenAtive =(screenName)=>{
                     confirmPassword:result.confirmPassword.value,
                 }
                 controller.register(dataUser);
-            })
+            });
             document.getElementById('login').addEventListener('click',()=>{
                 
-                view.setScreenAtive('login')
+                view.setScreenAtive('login');
             });
 
             break;
@@ -177,19 +176,20 @@ view.setScreenAtive =(screenName)=>{
                     <span class="cart-price cart-column price">${data[i].sum}</span>
                     <div class="cart-quantity cart-column">
                         <input class="cart-quantity-input" type="number" value="${data[i].total}">
-                        <button class="btn btn-danger" type="button">REMOVE</button>
+                        <button class="btn btn-danger remove" type="button">REMOVE</button>
                     </div>
                     </div>`
     
                 }
+                let sumLayOut = layout
                 let layoutCartItem = document.getElementsByClassName('cart-items')[0]
-                layoutCartItem.innerHTML +=layout
+                layoutCartItem.innerHTML = sumLayOut
                 
                 // lay du lieu tu the
                 let inputValue = document.getElementsByClassName('cart-quantity-input')
                 let nameValue = document.getElementsByClassName('cart-item-title')
                 let priceValue = document.getElementsByClassName('price')
-                let remove = document.getElementsByClassName('btn');
+            
                 let cartRow = document.getElementsByClassName('cart-hidden')
                 for(let i=0;i<inputValue.length;i++){
                     inputValue[i].addEventListener('change' ,()=>{  
@@ -204,16 +204,19 @@ view.setScreenAtive =(screenName)=>{
                 }
                 
                 // su kien click remove
-                for (let i = 0 ; i<remove.length;i++){
-                    remove[i].addEventListener('click',()=>{
-                        let data = {
-                            name: nameValue[i].textContent,
-                        }
-                        model.deleteCard(data)
-                        view.removeCart(i)
-                    })
-                }
-                
+                let remove = document.getElementsByClassName('remove');
+            // let cartRow = document.getElementsByClassName('cart-hidden')
+            console.log(remove);
+            for (let i = 0 ; i<remove.length;i++){console.log(remove[i]);
+                remove[i].addEventListener('click',()=>{
+                    let data = {
+                        name: nameValue[i].textContent,
+                        
+                    }
+                    view.removeCart(i);
+                    model.deleteCard(data)
+                })
+            }
                 view.changValuePrice = (position,value)=>{
                     let priceValue = document.getElementsByClassName('price')[position];
                     priceValue.innerHTML = value
@@ -228,14 +231,14 @@ view.setScreenAtive =(screenName)=>{
                 
             }
             let cartRow = document.getElementsByClassName('cart-hidden')
-
+            
             let layoutCartItem = document.getElementsByClassName('cart-items')[0]
-
+            
             view.removeCart = (position)=>{
-                // cartRow[position].parentNode.removeChild(cartRow[position])
                 layoutCartItem.removeChild(cartRow[position])
-                
             }
+            
+
             break;
         case 'resetpassword' :
             document.getElementById('app').innerHTML = component.resetEmail;
@@ -251,3 +254,74 @@ view.setScreenAtive =(screenName)=>{
             break;
     }
 }
+
+
+
+
+// toast
+function toast({ title = "", message = "", type = "", duration = 3000 }) {
+    const main = document.getElementById("toast");
+    if (main) {
+        const autoRemoveId = setTimeout(() => {
+            main.removeChild( toast)
+        }, duration);
+      const toast = document.createElement("div");
+      toast.onclick = function (e) {
+        if (e.target.closest(".toast__close")){
+            main.removeChild(toast)
+            clearTimeout(autoRemoveId)
+        }
+        
+      }
+      const icons = {
+        success:"fa-solid fa-circle-check",
+        info:"fa-solid fa-circle-info",
+        error:"fa-solid fa-circle-exclamation"
+      }
+      const icon = icons[type]
+    //   const delay = (duration / 1000).toFixed(2)
+      toast.classList.add("toast" , `toast--${type}`);
+    //   toast.style.animation =` slideInLeft ease .3s ,fadeout linear 1s ${delay}s forwards`;
+      toast.innerHTML = `
+        
+    <div class="toast__icon">
+      <i class="${icon}"></i>
+    </div>
+    <div class="toast__body">
+      <h3 class="toast__title">${title}</h3>
+      <p class="toast__msg">${message}</p>
+    </div>
+    <div class="toast__close">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+  
+        `;
+        main.appendChild(toast);
+       
+    }
+  }
+
+  function ShowSuccessToast(message) {
+    toast({
+    title: "Success",
+    message: message,
+    type: "success",
+    duration: 4000,
+  });
+  }
+  function ShowErrorToast(message) {
+    toast({
+    title: "Error",
+    message: message,
+    type: "error",
+    duration: 4000,
+  });
+  }
+  function ShowInfoToast(message) {
+    toast({
+    title: "Thông báo",
+    message: message,
+    type: "info",
+    duration: 4000,
+  });
+  }

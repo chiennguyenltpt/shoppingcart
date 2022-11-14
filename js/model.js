@@ -15,13 +15,14 @@ model.register = async (data) => {
 
     try {
         await auth.createUserWithEmailAndPassword(data.email, data.password);
+        ShowSuccessToast('Success')
         view.setScreenAtive('login');
         await auth.currentUser.sendEmailVerification();
         db.collection('user').doc(auth.currentUser.uid).set(
             data
-        )
+            )
     } catch (error) {
-        alert(error.message)
+        ShowErrorToast(error.message)
     }
 };
 
@@ -40,10 +41,12 @@ model.login = async (data) => {
             displayName: username,
         })
         if (response && auth.currentUser.emailVerified) {
+            ShowSuccessToast("Login Success")
             view.dataUser(auth.currentUser.displayName)
             view.setScreenAtive('home')
 
         };
+
     } catch (error) {
         alert(error.message)
     }
@@ -117,6 +120,8 @@ try {
                     sum:data.price
                 }]
             })
+            
+       
         } else {
             let value = response.data().product;
             for (let x in value){
@@ -127,7 +132,8 @@ try {
                  await   db.collection('shopping').doc(auth.currentUser.email).update({
                         product:value
                     })
-                    break;
+                    // ShowSuccessToast('add cart success')
+                break
                 }else {
                   await  db.collection('shopping').doc(auth.currentUser.email).update({
                         product:firebase.firestore.FieldValue.arrayUnion({
@@ -137,12 +143,12 @@ try {
                             sum:data.price
                         })                 
                 })
-                }
             }
-        }
-        // alert('thanh cong r')
+        }   
+    }
+        ShowSuccessToast('add cart success')
     }catch (error) {
-        console.log(error.message);
+        ShowErrorToast('add cart not success')
     }
 };
 model.pushValueCard()
@@ -174,13 +180,13 @@ model.getShoppingValue =async (data)=>{
         await db.collection('shopping').get()
         let response = await db.collection('shopping').doc(auth.currentUser.email).get()
         var result=  response.data().product;
-        view.showCard(result)
+        // view.showCard(result)
         // controller.totalPrice(result)
         await db.collection("shopping").doc(auth.currentUser.email)
         .onSnapshot(doc => {
             let result = doc.data().product;
             
-            // view.showCard(result);
+            view.showCard(result);
             controller.totalPrice(result)
         });
         
@@ -219,74 +225,27 @@ model.deleteCard = async (data)=>{
             for (let i =0 ;i<result.length;i++){
                 if (result[i].name== data.name){ 
                     result.splice(i,1);
-                    // view.removeCart(i);
+                    db.collection('shopping').doc(auth.currentUser.email).update({
+                        product:result,
+                    })
+                    controller.totalPrice(result)
                 }
             }
         });
-        // update lai database
-        let response = await db.collection('shopping').doc(auth.currentUser.email).get()
-        var result=  response.data().product;
-        for(let i =0; i<result.length; i++){
-            if(result[i].name==data.name){
-                result.splice(i,1);
-                await   db.collection('shopping').doc(auth.currentUser.email).update({
-                    product:result,
-                })
-            
-                }
-            } 
-            controller.totalPrice(result)
+        ShowSuccessToast("remove success");
         } catch (error) {
-        console.log(error.message);
+        ShowErrorToast("remove is not success");
     }
 }
-
-
 
 // model reset lai mat khau
 model.resetEmail = (data)=>{
     firebase.auth().sendPasswordResetEmail(data)
             .then(() => {
-              alert('please check your Email')
+              ShowSuccessToast("please check your email")
               view.setScreenAtive('login')
             })
             .catch((error) => {
-              alert("email is not avaible!!")
+              ShowErrorToast("Email is not avaiable")
             });
 }
-// update lai showcard 
-// model.updateShoppingRemove = async (data)=>{
-//     let response = await db.collection('shopping').doc(auth.currentUser.email).get()
-//         var result=  response.data().product;
-//         for(let i =0; i<result.length; i++){
-//             if(result[i].name==data.name){
-//                 result.splice(i,1);
-//                 await   db.collection('shopping').doc(auth.currentUser.email).update({
-//                     product:result,
-//                 })
-//             }
-//             view.removeCart(i);
-//         } 
-//         // view.showCard(result)
-//         controller.totalPrice(result)
-// }
-
-// const solution = function(nums,target) {
-//     for (let x=0 ;x < nums.length;x++){
-//         if (nums[x] ==target) {
-//             let output = x
-//              console.log(output);
-//         }else {
-//             nums[x+1]=target
-//             nums.sort((a,b)=>{ return a-b})
-//             for (let j in nums){
-//                 if (nums[j]==target)
-//                 console.log(j);
-//             }
-                
-//         }
-//     }
-// }
-// let arr = [1,3,4,6,7]
-// let target = 5
-// solution(arr,target)
