@@ -43,7 +43,6 @@ nav {
     margin-left: 5px;
     background-color: rgba(122, 47, 66, 0.3);
     color: red;
-    visibility: hidden;
 }
 .menu ul li .fa-brands.fa-apple {
     font-size:25px;

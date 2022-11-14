@@ -134,16 +134,13 @@ component.login =`
         </div>
         <div class="password item">
             <label for="password">password</label><br>
-            <input type="text" name="password" placeholder="password"><br>
+            <input type="text" name="password" placeholder="password" ><br>
             <small>Error</small>
         </div>
     
         <p>You dont have account !! <a id='signup'>Sign up</a></p>
         <p id = 'forgot-password'>forgot password</p>
         <button type='submit'>Sign In</button>
-    
-    
-    
     
     </div>
     </div>
@@ -171,6 +168,80 @@ component.purchase =`
         </section>
 
     </div>`
+
+
+
+// trang thanh toan bang the
+component.payment = `
+<header id= 'payment'>
+        <div class="container-payment">
+            <div class="left">
+                <h3>BILLING ADDRESS</h3>
+                <form>
+                    Full name
+                    <input type="text" name="" placeholder="Enter name">
+                    Email
+                    <input type="text" name="" placeholder="Enter email">
+    
+                    Address
+                    <input type="text" name="" placeholder="Enter address">
+                    
+                    City
+                    <input type="text" name="" placeholder="Enter City">
+                    <div id="zip">
+                        <label>
+                            State
+                            <select>
+                                <option>Choose State..</option>
+                                <option>Rajasthan</option>
+                                <option>Hariyana</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Madhya Pradesh</option>
+                            </select>
+                        </label>
+                            <label>
+                            Zip code
+                            <input type="number" name="" placeholder="Zip code">
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="right">
+                <h3>PAYMENT</h3>
+                <form>
+                    Accepted Card <br>
+                    <img src="../image/card1.png" width="100">
+                    <img src="../image/card2.png" width="50">
+                    <br><br>
+    
+                    Credit card number <br>
+                <input type="text" name="" placeholder="Enter card number"><br>
+                    
+                    Exp month<br>
+                    <input type="text" name="" placeholder="Enter Month"><br>
+                    <div id="zip">
+                        <label>
+                            Exp year
+                            <select>
+                                <option>Choose Year..</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </label>
+                            <label>
+                            CVV
+                            <input type="number" name="" placeholder="CVV">
+                        </label>
+                    </div>
+                </form>
+                <h3>total : <span>$400</span></h3>
+                <input type="submit" name="" value="Proceed to Checkout">
+            </div>
+        </div>
+    </header>
+`
 // trang reset mat khau
 component.resetEmail = `<div class="send-email">
 <div class="main-content">

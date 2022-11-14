@@ -91,15 +91,24 @@ controller.card = (data)=>{
     model.pushValueCard(data)
 }
 // xu ly du lieu tu card lay ve
-controller.totalPrice = (data)=>{
-    let sum = 0
+controller.totalPrice = (data)=>{  
+    let sum = 0 ;
         for(let i of data) {
             sum+=Number(i.sum.replace("$",''))
         }
     let total = '$' + sum.toString()
-    view.totalPrice(total)  
-    // view.showCard(data)
+    view.totalPrice(total) 
 }
+// lay ra tong so luong
+controller.quantity = (data)=>{
+    console.log(data);
+    let sumTotal = 0;
+    for (i in data){
+        sumTotal +=data[i].total; 
+    }
+    document.querySelector('.menu ul li span').innerHTML = sumTotal
+}
+
 // controller.remakeValueCard()
 // var models = [
 // 	{ id: 1, name: "samsung", seller_id: 1, count: 56 },

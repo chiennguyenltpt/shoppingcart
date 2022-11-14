@@ -49,7 +49,7 @@ view.setScreenAtive =(screenName)=>{
             document.getElementById('user').innerHTML=dataUserName;
             app.innerHTML=component.home;
             // click hien thi chat boxx
-            
+            model.realTimeTotal()
             document.getElementsByClassName('message-icon')[0].addEventListener('click',()=>{
                 if(document.getElementsByClassName('chatapp')[0].style.visibility == 'hidden'){
                     document.getElementsByClassName('chatapp')[0].style.visibility = 'visible'
@@ -131,6 +131,8 @@ view.setScreenAtive =(screenName)=>{
             break;
         case 'login' :
             document.getElementById('app').innerHTML = component.login;
+            document.querySelector('.menu ul li span').innerHTML = 0
+
             let data= document.getElementById('login');
             data.addEventListener('submit',(e)=>{
                 e.preventDefault();
@@ -206,8 +208,8 @@ view.setScreenAtive =(screenName)=>{
                 // su kien click remove
                 let remove = document.getElementsByClassName('remove');
             // let cartRow = document.getElementsByClassName('cart-hidden')
-            console.log(remove);
-            for (let i = 0 ; i<remove.length;i++){console.log(remove[i]);
+            
+            for (let i = 0 ; i<remove.length;i++){
                 remove[i].addEventListener('click',()=>{
                     let data = {
                         name: nameValue[i].textContent,
@@ -219,7 +221,7 @@ view.setScreenAtive =(screenName)=>{
             }
                 view.changValuePrice = (position,value)=>{
                     let priceValue = document.getElementsByClassName('price')[position];
-                    priceValue.innerHTML = value
+                    priceValue.innerHTML = value;
                 }
                 
                 // hien tong tien
@@ -237,8 +239,15 @@ view.setScreenAtive =(screenName)=>{
             view.removeCart = (position)=>{
                 layoutCartItem.removeChild(cartRow[position])
             }
-            
+            let purchase = document.getElementsByClassName('btn-purchase')[0]
+            purchase.addEventListener('click',()=>{
+                view.setScreenAtive('payment')
+            })
 
+            break;
+
+        case "payment" :
+            document.getElementById('app').innerHTML = component.payment;
             break;
         case 'resetpassword' :
             document.getElementById('app').innerHTML = component.resetEmail;
@@ -247,8 +256,8 @@ view.setScreenAtive =(screenName)=>{
             btn.addEventListener('click' ,()=>{
                 let resultValue = valueInput.value;
                 controller.resetEmail(resultValue)
-
             })
+            break;
 
         default:
             break;

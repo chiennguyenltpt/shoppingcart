@@ -148,7 +148,7 @@ try {
     }
         ShowSuccessToast('add cart success')
     }catch (error) {
-        ShowErrorToast('add cart not success')
+         ShowErrorToast('add cart not success')
     }
 };
 model.pushValueCard()
@@ -234,9 +234,24 @@ model.deleteCard = async (data)=>{
         });
         ShowSuccessToast("remove success");
         } catch (error) {
-        ShowErrorToast("remove is not success");
+        ShowErrorToast(error.message)
     }
 }
+
+// get realtime total 
+model.realTimeTotal = async (data)=>{
+    try {
+        await db.collection('shopping').get()
+        await db.collection("shopping").doc(auth.currentUser.email)
+        .onSnapshot(doc => {
+            let result = doc.data().product
+            controller.quantity(result)
+        })
+    } catch (error) {
+        
+    }
+}
+model.realTimeTotal()
 
 // model reset lai mat khau
 model.resetEmail = (data)=>{
