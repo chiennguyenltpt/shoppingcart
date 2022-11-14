@@ -179,9 +179,9 @@ component.payment = `
                 <h3>BILLING ADDRESS</h3>
                 <form>
                     Full name
-                    <input type="text" name="" placeholder="Enter name">
+                    <input type="text" name=""  id='name' placeholder="Enter name">
                     Email
-                    <input type="text" name="" placeholder="Enter email">
+                    <input type="text" name="" id ='email' placeholder="Enter email">
     
                     Address
                     <input type="text" name="" placeholder="Enter address">

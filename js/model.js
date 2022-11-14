@@ -148,7 +148,7 @@ try {
     }
         ShowSuccessToast('add cart success')
     }catch (error) {
-         ShowErrorToast('add cart not success')
+        //  ShowErrorToast('add cart not success')
     }
 };
 model.pushValueCard()
@@ -264,3 +264,27 @@ model.resetEmail = (data)=>{
               ShowErrorToast("Email is not avaiable")
             });
 }
+// model lay du lieu ten cac tinh thanh pho viet nam
+model.getApiCity = (data)=>{
+    fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
+    .then(function (response) {
+        return response.json()
+    })   
+    .then(function(post){
+        
+      data =   post.reduce((acc,item)=>{
+            return [...acc,item.Name]
+        },[])
+    })
+}
+model.getApiCity()
+
+// var Parameter = {
+//     url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+//     method: "GET", 
+//     responseType: "application/json", 
+//   };
+//   var promise = axios(Parameter);
+//   promise.then(function (result) {
+//     renderCity(result.data);
+//   });

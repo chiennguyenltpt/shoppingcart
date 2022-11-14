@@ -245,10 +245,33 @@ view.setScreenAtive =(screenName)=>{
             })
 
             break;
+// trang thanh toan 
 
         case "payment" :
             document.getElementById('app').innerHTML = component.payment;
+            let email = document.getElementById("email");
+            let nameUser = document.getElementById("name");
+            email.setAttribute('value',`${auth.currentUser.email}`)
+            nameUser.setAttribute("value",`${auth.currentUser.displayName}`)
             break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         case 'resetpassword' :
             document.getElementById('app').innerHTML = component.resetEmail;
             let btn = document.querySelector('button')

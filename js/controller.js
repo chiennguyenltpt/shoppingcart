@@ -101,7 +101,6 @@ controller.totalPrice = (data)=>{
 }
 // lay ra tong so luong
 controller.quantity = (data)=>{
-    console.log(data);
     let sumTotal = 0;
     for (i in data){
         sumTotal +=data[i].total; 
