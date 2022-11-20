@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./css/resetEmail.css">
     <link rel="stylesheet" href="./css/toast.css">
     <link rel="stylesheet" href="./css/checkout.css">
+    <link rel="stylesheet" href="./css/main.css"> 
     <title>Document</title>
 </head>
 <body>
@@ -23,16 +24,22 @@
                 <li><a ><i class="fa-brands fa-apple"></i></a></li>
                 <li><a  class="menu-item">Mac</a></li>
                 <li><a  class="menu-item">Ipad</a></li>
-                <li><a  class="menu-item">Iphone</a></li>
+                <li><a  class="menu-item" id = 'iphone'>Iphone</a></li>
                 <li><a  class="menu-item">Watch</a></li>
                 <li><a  class="menu-item">Tv</a></li>
-                <li><a  id="search" onmouseover="hideNav()"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></a></li>      
+                <li><a  id="search" ><i class="fa-sharp fa-solid fa-magnifying-glass"></i></a></li>      
                 <li><a ><i class="fa-solid fa-cart-shopping"></i><span>0</span></a></li>
                 <li> <img src="./image/avatar.jpeg" alt=""></li>
                 <li><a  class="menu-item" id="user"></a ></li> 
                 <li><a  class="menu-item" id="logout">Sign out</a></li>
             
             </ul>
+
+            <div class="search-form">
+                <form>
+                    <input type="text" placeholder="search">
+                </form>
+            </div>
             <div id="toast">
 
             </div>
@@ -59,5 +66,4 @@
     <script src="./js/index.js"></script>
     <script src="./js/model.js"></script>
     <script src="./js/view.js"></script>
-
 </html>

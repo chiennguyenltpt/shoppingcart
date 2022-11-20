@@ -1,0 +1,134 @@
+.screen-slide{
+    width: 100%;
+    height: 100%;
+    background-color: #383838;
+    position: absolute;
+}
+.container1{
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+    width:1000px;
+    height:600px;
+    padding:50px;
+    box-shadow: 0 40px 10px #dbdbdb;
+    border-radius: 15px;
+}
+.item-slide {
+    width:max-content;
+    margin-top: 50px;
+}
+.item-slide {
+    width: 200px;
+    height: 300px;
+    background-position: 50% 50%;
+    display: inline-block;
+    transition: 0.5s;   
+    background-size:cover; 
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translate(0,-30%);
+    border-radius: 20px;
+    box-shadow: 0 25px 45px rgb(54, 49, 49);
+    
+}
+
+
+
+.item-slide:nth-child(1),
+.item-slide:nth-child(2){
+    left: 0;
+    top: 0;
+    transform: translate(0,0);
+    box-shadow: none;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+
+}
+
+.item-slide:nth-child(3){
+    left: 70%;
+}
+.item-slide:nth-child(4){
+    left: calc(70% + 220px)
+}
+.item-slide:nth-child(5){
+    left: calc(70% + 440px);
+    opacity: 0
+}
+.item-slide:nth-child(n+6){
+    left: calc(70% + 660px);
+    opacity: 0;
+}
+
+.item-slide .content1{
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    width: 300px;
+    text-align: left;
+    padding: 0;
+    color: #eee;
+    transform: translate(0,-50%);
+    display: none;
+}
+
+.item-slide:nth-child(2) .content1{
+    display: block;
+    z-index: 1111;  
+}
+.item-slide .name-slide{
+    font-family: system-ui;
+    font-size:40px;
+    font-weight: bold;  
+    opacity: 0;
+    animation: showcontent 1s ease-in-out 0.4s forwards;
+}
+.item-slide .text{
+    font-family: system-ui;
+    margin: 20px 0;
+    opacity: 0 ;
+    animation: showcontent 1s ease-in-out 0.6s forwards;
+}
+.item-slide button {
+    padding: 10px 20px;
+    border: none;
+    opacity: 0;
+    animation: showcontent 1s ease-in-out 0.8s forwards;
+
+}
+
+@keyframes showcontent {
+    from {
+        opacity: 0;
+        transform: translate(0,200px);
+        filter:blur(33px) ;
+    }to{
+        opacity: 1;
+        transform: translate(0,0);
+        filter:blur(0) ;
+    }
+}
+
+
+.button {
+    position: absolute;
+    bottom: 50px;
+    z-index: 22222222;
+    font-size: 40px;
+    text-align: center;
+    width: 100%;
+}
+.button button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1 solid #555;
+    transition: 0.5s;
+}
+.button button:hover{
+    background-color: #383838;
+}

@@ -57,7 +57,7 @@
 .card .img img {
     width: 240px;
     height: 240px;
-    transform: scale(1) rotate(10deg);
+    transform: scale(1) rotate(1deg);
     transition: 0.5s;
     display: block;
     object-fit: cover;
@@ -122,26 +122,26 @@
 
 }
 .card .img:hover img {
-    transform: scale(1.2) rotate(30deg) translate(-10px,-20px) rotateY(180deg);    
+    transform: scale(1.2) rotate(5deg) translate(-10px,-20px)  rotateY(180deg);    
 }
 
 .mores{
     position: absolute;
-    bottom: 0px;
+    bottom: 15px;
     text-align: center;
     width:100%;
     color:rgb(5, 2, 2);
 
 }
 .text-yellow{
-    color: rgb(12, 12, 10);
+    color: rgb(244, 135, 11);
 }
 
 .addCard label {
     display:flex;
     position: relative;
     background-color:#291f1f55;
-    bottom: 30px;
+    bottom: 0px;
     left:30px;
     width:40px;
     height:40px;
@@ -160,7 +160,7 @@
     position: fixed;
     width: 40px;
     right: 10px;
-    bottom: 20px;
+    bottom: 10px;
     cursor: pointer;
 }
 .message-icon:hover{

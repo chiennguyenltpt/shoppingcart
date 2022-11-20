@@ -3,15 +3,42 @@ const component = {};
 // giao dien trang tru
 
 const listData = [
-    {name:'Iphone1',price:'$799'},
-    {name:'Iphone12',price:'$599'},
-    {name:'Iphone11',price:'$699'},
-    {name:'Iphone17',price:'$899'},
-    {name:'Iphone13',price:'$999'},
-    {name:'Iphone15',price:'$399'},
-    {name:'Iphone19',price:'$299'},
-    {name:'Iphone20',price:'$499'},
-    {name:'Iphone11',price:'$567'},
+    {name:'Iphone1',price:'$599',img:'image/iphone1.png'},
+    {name:'Iphone2',price:'$699',img:'../image/iphone2-removebg-preview (1).png'},
+    {name:'Iphone3',price:'$799',img:'../image/iphone4-removebg-preview.png'},
+    {name:'Iphone4',price:'$234',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone5',price:'$432',img:'../image/iphone8-removebg-preview.png'},
+    {name:'Iphone6',price:'$456',img:'../image/green.png'},
+    {name:'Iphone7',price:'$787',img:'../image/iphone1.png'},
+    {name:'Iphone8',price:'$974',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone9',price:'$431',img:"../image/iphone4-removebg-preview.png"},
+    {name:'Iphone10',price:'$543',img:'image/iphone1.png'},
+    {name:'Iphone11',price:'$873',img:'../image/iphone2-removebg-preview (1).png'},
+    {name:'Iphone12',price:'$653',img:'../image/iphone4-removebg-preview.png'},
+    {name:'Iphone13',price:'$874',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone14',price:'$234',img:'../image/iphone8-removebg-preview.png'},
+    {name:'Iphone15',price:'$112',img:'../image/green.png'},
+    {name:'Iphone16',price:'$424',img:'../image/iphone1.png'},
+    {name:'Iphone17',price:'$432',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone18',price:'$432',img:"../image/iphone4-removebg-preview.png"},
+    {name:'Iphone19',price:'$324',img:'image/iphone1.png'},
+    {name:'Iphone20',price:'$436',img:'../image/iphone2-removebg-preview (1).png'},
+    {name:'Iphone21',price:'$438',img:'../image/iphone4-removebg-preview.png'},
+    {name:'Iphone22',price:'$421',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone23',price:'$432',img:'../image/iphone8-removebg-preview.png'},
+    {name:'Iphone24',price:'$976',img:'../image/green.png'},
+    {name:'Iphone25',price:'$064',img:'../image/iphone1.png'},
+    {name:'Iphone26',price:'$854',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone27',price:'$765',img:"../image/iphone4-removebg-preview.png"},
+    {name:'Iphone28',price:'$799',img:'image/iphone1.png'},
+    {name:'Iphone29',price:'$976',img:'../image/iphone2-removebg-preview (1).png'},
+    {name:'Iphone30',price:'$868',img:'../image/iphone4-removebg-preview.png'},
+    {name:'Iphone31',price:'$967',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone32',price:'$678',img:'../image/iphone8-removebg-preview.png'},
+    {name:'Iphone33',price:'$399',img:'../image/green.png'},
+    {name:'Iphone34',price:'$299',img:'../image/iphone1.png'},
+    {name:'Iphone35',price:'$678',img:'../image/iphone7-removebg-preview (1).png'},
+    {name:'Iphone36',price:'$868',img:"../image/iphone4-removebg-preview.png"},
 
 ]
 let layout = ''
@@ -27,19 +54,12 @@ for (let i=0;i<listData.length;i++ ){
                 <div class="img">
                     <div class="item">
                         <input type="radio" name="color" id="green" checked>
-                        <img src="../image/green.png" alt="">
+                        <img src="${listData[i].img}" alt="">
                     </div>
                 </div>
-                <div class="colors">
-                    <label for="green">
-                        <div class="ellipse" style="background-color: rgb(233, 147, 161);"></div>
-                    </label>
-                    <label for="black">
-                        <div class="ellipse" style="background-color: rgb(228, 208, 211);"></div>
-                    </label>
-                </div>
+                
             </div>     
-        
+
                 <div class="mores">
                     <div class="price">${listData[i].price}</div>
                     <div class="star">
@@ -141,6 +161,10 @@ component.login =`
         <p>You dont have account !! <a id='signup'>Sign up</a></p>
         <p id = 'forgot-password'>forgot password</p>
         <button type='submit'>Sign In</button>
+        <div>
+            <i class="fa-brands fa-facebook" id ='facebook'></i>
+            <img id="google" src="./image/logoGoogle.png" alt="">
+        </div>
     
     </div>
     </div>
@@ -179,29 +203,25 @@ component.payment = `
                 <h3>BILLING ADDRESS</h3>
                 <form>
                     Full name
-                    <input type="text" name=""  id='name' placeholder="Enter name">
+                    <input type="text" name=""  id='name' class= 'infoUser' placeholder="Enter name">
                     Email
-                    <input type="text" name="" id ='email' placeholder="Enter email">
+                    <input type="text" name="" id ='email' class= 'infoUser'  placeholder="Enter email">
     
                     Address
-                    <input type="text" name="" placeholder="Enter address">
+                    <input type="text" name=""  class= 'infoUser' placeholder="Enter address">
                     
                     City
-                    <input type="text" name="" placeholder="Enter City">
+                    <input type="text" name=""  class= 'infoUser' placeholder="Enter City">
                     <div id="zip">
                         <label>
                             State
-                            <select>
-                                <option>Choose State..</option>
-                                <option>Rajasthan</option>
-                                <option>Hariyana</option>
-                                <option>Uttar Pradesh</option>
-                                <option>Madhya Pradesh</option>
+                            <select class = 'province'>
+                                
                             </select>
                         </label>
                             <label>
                             Zip code
-                            <input type="number" name="" placeholder="Zip code">
+                            <input type="number" name="" class= 'infoUser'  placeholder="Zip code">
                         </label>
                     </div>
                 </form>
@@ -215,10 +235,10 @@ component.payment = `
                     <br><br>
     
                     Credit card number <br>
-                <input type="text" name="" placeholder="Enter card number"><br>
-                    
+                <input type="text" name="" class= 'infoUser'  placeholder="xxxx-xxxx-xxxx-xxxx"><br>
+               
                     Exp month<br>
-                    <input type="text" name="" placeholder="Enter Month"><br>
+                    <input type="text" name="" class= 'infoUser'  placeholder="Enter Month"><br>
                     <div id="zip">
                         <label>
                             Exp year
@@ -232,16 +252,75 @@ component.payment = `
                         </label>
                             <label>
                             CVV
-                            <input type="number" name="" placeholder="CVV">
+                            <input type="number" class= 'infoUser'  name="" placeholder="CVV">
                         </label>
                     </div>
                 </form>
-                <h3>total : <span>$400</span></h3>
-                <input type="submit" name="" value="Proceed to Checkout">
+                <h3>total : <span>$0</span></h3>
+                <input type="submit" id='btn' name="" value="Proceed to Checkout">
             </div>
         </div>
     </header>
 `
+
+// trang silde
+component.slide =`  <div class= 'screen-slide'>
+<div class="container1">
+<div id="slide">
+    <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+    </div>
+    <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+    </div>
+    <div class="item-slide" style="background-image: url(../image/anhcho.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+    </div>
+    
+    <div class="item-slide" style="background-image: url(../image/anhcho.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+    </div>
+    <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+    </div>
+    <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
+        <div class="content1">
+            <div class="name-slide">Iphone14 Pro Max</div>
+            <div class="text">Dinh cao cong nghe</div>
+            <button>See More</button>
+        </div>
+</div>
+<div class="button">
+    <button id="prev"><i class="fa-solid fa-left"></i></button>
+    <button id="next"><i class="fa-solid fa-right"></i></button>
+</div>
+</div>
+
+
+
+</div>
+`
+
 // trang reset mat khau
 component.resetEmail = `<div class="send-email">
 <div class="main-content">

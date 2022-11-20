@@ -10,7 +10,7 @@ const firebaseApp = firebase.initializeApp({
 });
 const db = firebaseApp.firestore();
 const auth = firebaseApp.auth();
-
+const database = firebase.database();
 model.register = async (data) => {
 
     try {
@@ -20,7 +20,7 @@ model.register = async (data) => {
         await auth.currentUser.sendEmailVerification();
         db.collection('user').doc(auth.currentUser.uid).set(
             data
-            )
+        )
     } catch (error) {
         ShowErrorToast(error.message)
     }
@@ -54,24 +54,24 @@ model.login = async (data) => {
 
 model.chatapp = async (data) => {
     try {
-        let response =  await db.collection('chatapp').doc('chatbox').get()
-        if(response.exists==false){
+        let response = await db.collection('chatapp').doc('chatbox').get()
+        if (response.exists == false) {
             db.collection('chatapp').doc('chatbox').set({
-                message:[{
-                name: auth.currentUser.email,
-                message: data.message,
-                "time": new Date().toLocaleString()
+                message: [{
+                    name: auth.currentUser.email,
+                    message: data.message,
+                    "time": new Date().toLocaleString()
                 }]
-        })
-        }else{
-            
-         await db.collection('chatapp').doc('chatbox').update({
-            message: firebase.firestore.FieldValue.arrayUnion({
-                name: auth.currentUser.email,
-                message: data.message,
-                "time": new Date().toLocaleString()
             })
-        })
+        } else {
+
+            await db.collection('chatapp').doc('chatbox').update({
+                message: firebase.firestore.FieldValue.arrayUnion({
+                    name: auth.currentUser.email,
+                    message: data.message,
+                    "time": new Date().toLocaleString()
+                })
+            })
         }
     } catch (error) {
         console.log(error.message);
@@ -81,121 +81,121 @@ model.chatapp()
 
 model.getMessageValue = async (data) => {
     try {
-        let response = await  db.collection("chatapp").doc("chatbox").get()
+        let response = await db.collection("chatapp").doc("chatbox").get()
         let result = response.data().message
-             for(i in result) {
-                if (auth.currentUser.email==result[i].name) {
-                    view.addUserMessage(result[i].message)
-                }else {
-            if (i==result.length-1) {
-                break
-            } else{
-                view.addBotMessage(result[i].message)
-            }        
+        for (i in result) {
+            if (auth.currentUser.email == result[i].name) {
+                view.addUserMessage(result[i].message)
+            } else {
+                if (i == result.length - 1) {
+                    break
+                } else {
+                    view.addBotMessage(result[i].message)
+                }
+            }
         }
-    }
-    await db.collection("chatapp")
-    .onSnapshot((value)=>{
-        let message = value.docs.map((doc)=>({...doc.data()}))
-        let messageValue = message[0].message
-        let lastMessage = messageValue[messageValue.length-1]
-        if(auth.currentUser.email!=lastMessage.name){
-            view.addBotMessage(lastMessage.message)
-        }
-    });         
+        await db.collection("chatapp")
+            .onSnapshot((value) => {
+                let message = value.docs.map((doc) => ({ ...doc.data() }))
+                let messageValue = message[0].message
+                let lastMessage = messageValue[messageValue.length - 1]
+                if (auth.currentUser.email != lastMessage.name) {
+                    view.addBotMessage(lastMessage.message)
+                }
+            });
     } catch (error) {
         console.log(error.message);
     }
 }
 // model day du lieu cua card
-model.pushValueCard = async (data)=>{
-try {
-    let response =  await db.collection('shopping').doc(auth.currentUser.email).get()
-        if(response.exists==false || response.data().product.length ==0){
-           await db.collection('shopping').doc(auth.currentUser.email).set({
-                    product:[{
+model.pushValueCard = async (data) => {
+    try {
+        let response = await db.collection('shopping').doc(auth.currentUser.email).get()
+        if (response.exists == false || response.data().product.length == 0) {
+            await db.collection('shopping').doc(auth.currentUser.email).set({
+                product: [{
                     name: data.name,
                     price: data.price,
-                    total:1,
-                    sum:data.price
+                    total: 1,
+                    sum: data.price
                 }]
             })
-            
-       
+
+
         } else {
             let value = response.data().product;
-            for (let x in value){
-                if(value[x].name==data.name){
-                    value[x].total+=1
-                    var priceTotal = Number(value[x].total)*Number(data.price.replace('$',''))
+            for (let x in value) {
+                if (value[x].name == data.name) {
+                    value[x].total += 1
+                    var priceTotal = Number(value[x].total) * Number(data.price.replace('$', ''))
                     value[x].sum = '$' + priceTotal.toString()
-                 await   db.collection('shopping').doc(auth.currentUser.email).update({
-                        product:value
+                    await db.collection('shopping').doc(auth.currentUser.email).update({
+                        product: value
                     })
                     // ShowSuccessToast('add cart success')
-                break
-                }else {
-                  await  db.collection('shopping').doc(auth.currentUser.email).update({
-                        product:firebase.firestore.FieldValue.arrayUnion({
+                    break
+                } else {
+                    await db.collection('shopping').doc(auth.currentUser.email).update({
+                        product: firebase.firestore.FieldValue.arrayUnion({
                             name: data.name,
                             price: data.price,
-                            total:1,
-                            sum:data.price
-                        })                 
-                })
+                            total: 1,
+                            sum: data.price
+                        })
+                    })
+                }
             }
-        }   
-    }
+        }
         ShowSuccessToast('add cart success')
-    }catch (error) {
+    } catch (error) {
         //  ShowErrorToast('add cart not success')
     }
 };
 model.pushValueCard()
 
 // update   du lieu  so luong shopping
-model.quantity = async(data)=>{
-    try{
-        await db.collection('shopping').get()
-        let response = await db.collection('shopping').doc(auth.currentUser.email).get()
-        var result=  response.data().product;
-        for(let i =0; i<result.length; i++){
-            if(result[i].name==data.name){
-                result[i].total =Number(data.total)
-                result[i].sum = '$' + (Number(data.total) *Number(result[i].price.replace("$",''))).toString()
-                await   db.collection('shopping').doc(auth.currentUser.email).update({
-                    product:result
-                })
-            }
-        } 
-         
-    }catch (error){
-
-    }   
-} 
-model.quantity()
-
-model.getShoppingValue =async (data)=>{
+model.quantity = async (data) => {
     try {
         await db.collection('shopping').get()
         let response = await db.collection('shopping').doc(auth.currentUser.email).get()
-        var result=  response.data().product;
+        var result = response.data().product;
+        for (let i = 0; i < result.length; i++) {
+            if (result[i].name == data.name) {
+                result[i].total = Number(data.total)
+                result[i].sum = '$' + (Number(data.total) * Number(result[i].price.replace("$", ''))).toString()
+                await db.collection('shopping').doc(auth.currentUser.email).update({
+                    product: result
+                })
+            }
+        }
+
+    } catch (error) {
+
+    }
+}
+model.quantity()
+
+model.getShoppingValue = async (data) => {
+    try {
+        await db.collection('shopping').get()
+        let response = await db.collection('shopping').doc(auth.currentUser.email).get()
+        var result = response.data().product;
         // view.showCard(result)
         // controller.totalPrice(result)
         await db.collection("shopping").doc(auth.currentUser.email)
-        .onSnapshot(doc => {
-            let result = doc.data().product;
-            
-            view.showCard(result);
-            controller.totalPrice(result)
-        });
-        
+            .onSnapshot(doc => {
+                let result = doc.data().product;
+
+                view.showCard(result);
+                controller.totalPrice(result)
+            });
+
     } catch (error) {
         alert('wrong')
-    }   
+    }
 }
 // lay du lieu theo thoi gian thuc
-model.realTimeCard = async (data)=>{
+model.realTimeCard = async (data) => {
     try {
         await db.collection('shopping').get()
         await db.collection("shopping").doc(auth.currentUser.email)
@@ -204,87 +204,141 @@ model.realTimeCard = async (data)=>{
                 var suorce = doc.metadata.hasPendingWrite ? "Local" : "Server"
                 includeMetadataChanges: 'true'
                 let result = [...doc.data().product]
-                for (let i =0 ;i<result.length;i++){
-                    if (result[i].name== data.name){ 
-                        view.changValuePrice(i,result[i].sum)
+                for (let i = 0; i < result.length; i++) {
+                    if (result[i].name == data.name) {
+                        view.changValuePrice(i, result[i].sum)
                     }
                 }
             })
     } catch (error) {
-        
+
     }
 }
 // model delet card
-model.deleteCard = async (data)=>{
+model.deleteCard = async (data) => {
     try {
         await db.collection('shopping').get()
         await db.collection("shopping").doc(auth.currentUser.email)
-        .onSnapshot(doc => {
-            let result = doc.data().product;
-            includeMetadataChanges: 'true'
-            for (let i =0 ;i<result.length;i++){
-                if (result[i].name== data.name){ 
-                    result.splice(i,1);
-                    db.collection('shopping').doc(auth.currentUser.email).update({
-                        product:result,
-                    })
-                    controller.totalPrice(result)
+            .onSnapshot(doc => {
+                let result = doc.data().product;
+                includeMetadataChanges: 'true'
+                for (let i = 0; i < result.length; i++) {
+                    if (result[i].name == data.name) {
+                        result.splice(i, 1);
+                        db.collection('shopping').doc(auth.currentUser.email).update({
+                            product: result,
+                        })
+                        controller.totalPrice(result)
+                    }
                 }
-            }
-        });
+            });
         ShowSuccessToast("remove success");
-        } catch (error) {
+    } catch (error) {
         ShowErrorToast(error.message)
     }
 }
 
 // get realtime total 
-model.realTimeTotal = async (data)=>{
+model.realTimeTotal = async (data) => {
     try {
         await db.collection('shopping').get()
         await db.collection("shopping").doc(auth.currentUser.email)
-        .onSnapshot(doc => {
-            let result = doc.data().product
-            controller.quantity(result)
-        })
+            .onSnapshot(doc => {
+                let result = doc.data().product
+                controller.quantity(result)
+            })
     } catch (error) {
-        
+
     }
 }
 model.realTimeTotal()
 
 // model reset lai mat khau
-model.resetEmail = (data)=>{
+model.resetEmail = (data) => {
     firebase.auth().sendPasswordResetEmail(data)
-            .then(() => {
-              ShowSuccessToast("please check your email")
-              view.setScreenAtive('login')
-            })
-            .catch((error) => {
-              ShowErrorToast("Email is not avaiable")
-            });
+        .then(() => {
+            ShowSuccessToast("please check your email")
+            view.setScreenAtive('login')
+        })
+        .catch((error) => {
+            ShowErrorToast("Email is not avaiable")
+        }); 
 }
 // model lay du lieu ten cac tinh thanh pho viet nam
-model.getApiCity = (data)=>{
-    fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
-    .then(function (response) {
-        return response.json()
-    })   
-    .then(function(post){
+model.getApiCity = async (data) => {
+    await fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
+
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (post) {
+            data = post.reduce((acc, item) => {
+                return [...acc, item.Name]
+            }, [])
+            return data
+        }).then((data) => {
+            let province = document.getElementsByClassName('province');
+            let sumHtml = ''
+            for (let i = 0; i < data.length; i++) {
+                sumHtml += `<option>${data[i]}</option> <br>`
+            }
+            province[0].innerHTML = sumHtml
+        })
+}
+
+model.pushValueUserBank = async (data)=>{
+    try {
+        let response = await db.collection('UserBank').doc(auth.currentUser.email).get()
+        if (response.exists == false) {
+            db.collection('UserBank').doc(auth.currentUser.email).set({
+                message: [data]
+            })
+        } else {
+
+            await db.collection('UserBank').doc(auth.currentUser.email).update({
+                message: firebase.firestore.FieldValue.arrayUnion(data)
+            })
+        }
+        ShowSuccessToast("You Payed success")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+model.getPriceTotal = async()=>{
+    try {
+        await db.collection('shopping').get()
+        await db.collection("shopping").doc(auth.currentUser.email)
+            .onSnapshot(doc => {
+                let result = doc.data().product;
+                let sum = 0 ;
+                for(let i of result) {
+                    sum+=Number(i.sum.replace("$",''))
+                }
+            let total = '$' + sum.toString()  
+               view.totalCheckOut(total)
+            });
         
-      data =   post.reduce((acc,item)=>{
-            return [...acc,item.Name]
-        },[])
+    } catch (error) {
+        ShowErrorToast(error.message)
+    }
+}
+model.updateShopBecomeEmty = async()=>{
+    await db.collection('shopping').doc(auth.currentUser.email).update({
+        product: []
     })
 }
-model.getApiCity()
+// dang nhap bang goole
+var ggProvider = new firebase.auth.GoogleAuthProvider();
+model.getTokenGoogle = ()=>{
+    firebase.auth().signInWithPopup(ggProvider).then(function(result) {
+        var token = result.credential.accessToken;
+        console.log(token);
+        var user = result.user;
+        console.log(user,1);
+    }).catch(function(error) {
+        console.log(error);
+    });
 
-// var Parameter = {
-//     url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
-//     method: "GET", 
-//     responseType: "application/json", 
-//   };
-//   var promise = axios(Parameter);
-//   promise.then(function (result) {
-//     renderCity(result.data);
-//   });
+}

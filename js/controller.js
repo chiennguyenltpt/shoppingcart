@@ -99,7 +99,7 @@ controller.totalPrice = (data)=>{
     let total = '$' + sum.toString()
     view.totalPrice(total) 
 }
-// lay ra tong so luong
+// lay ra tong so luong 
 controller.quantity = (data)=>{
     let sumTotal = 0;
     for (i in data){
@@ -108,6 +108,24 @@ controller.quantity = (data)=>{
     document.querySelector('.menu ul li span').innerHTML = sumTotal
 }
 
+// render ra cac tinh thanh
+
+controller.getValueCard = (data)=>{
+    console.log(data);
+    if(data.address ==''){
+        ShowErrorToast("address is not blank")
+    };
+    if(data.city==''){
+        ShowErrorToast("City is not blank")
+    };
+    if (data.cardNumber=='') {
+        ShowErrorToast("cardNumber can not be blank")
+    }else if(((new RegExp('.{1,4}', 'g')).join("-")).test(data.cardNumber)==false){
+        ShowErrorToast('Number is not format')
+    }
+    
+    // model.pushValueUserBank(data)
+}
 // controller.remakeValueCard()
 // var models = [
 // 	{ id: 1, name: "samsung", seller_id: 1, count: 56 },
@@ -129,9 +147,8 @@ controller.quantity = (data)=>{
 //  console.log(arr,111);
 
 
-// lay gia tri tu trang reset;
+// lay gia tri tu trang reset ;
 controller.resetEmail = (data)=>{
-    console.log(data);
     if(data==''){
         view.showError('main-content')
         view.showMessageError('main-content','email can not be blank!!')
