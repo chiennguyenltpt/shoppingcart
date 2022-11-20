@@ -88,9 +88,6 @@ body{
     height: 50px;
     cursor: pointer;
 }
-i{
-    width: 100%;
-}
 #google{
     width: 50px;
     position:absolute;
