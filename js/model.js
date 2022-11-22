@@ -15,12 +15,14 @@ model.register = async (data) => {
 
     try {
         await auth.createUserWithEmailAndPassword(data.email, data.password);
-        ShowSuccessToast('Success')
-        view.setScreenAtive('login');
         await auth.currentUser.sendEmailVerification();
+        ShowSuccessToast('Success')
+        firebase.auth().signOut()
+        view.setScreenAtive('login');
         db.collection('user').doc(auth.currentUser.uid).set(
             data
         )
+
     } catch (error) {
         ShowErrorToast(error.message)
     }
@@ -37,16 +39,16 @@ model.login = async (data) => {
             }
         });
         let response = await auth.signInWithEmailAndPassword(data.email, data.password);
-        await auth.currentUser.updateProfile({
-            displayName: username,
-        })
-        if (response && auth.currentUser.emailVerified) {
+
+        if (auth.currentUser.emailVerified && response) {
             ShowSuccessToast("Login Success")
             view.dataUser(auth.currentUser.displayName)
             view.setScreenAtive('home')
-
         };
 
+        await auth.currentUser.updateProfile({
+            displayName: username,
+        })
     } catch (error) {
         alert(error.message)
     }
@@ -262,7 +264,7 @@ model.resetEmail = (data) => {
         })
         .catch((error) => {
             ShowErrorToast("Email is not avaiable")
-        }); 
+        });
 }
 // model lay du lieu ten cac tinh thanh pho viet nam
 model.getApiCity = async (data) => {
@@ -286,7 +288,7 @@ model.getApiCity = async (data) => {
         })
 }
 
-model.pushValueUserBank = async (data)=>{
+model.pushValueUserBank = async (data) => {
     try {
         let response = await db.collection('UserBank').doc(auth.currentUser.email).get()
         if (response.exists == false) {
@@ -306,39 +308,102 @@ model.pushValueUserBank = async (data)=>{
 }
 
 
-model.getPriceTotal = async()=>{
+model.getPriceTotal = async () => {
     try {
         await db.collection('shopping').get()
         await db.collection("shopping").doc(auth.currentUser.email)
             .onSnapshot(doc => {
                 let result = doc.data().product;
-                let sum = 0 ;
-                for(let i of result) {
-                    sum+=Number(i.sum.replace("$",''))
+                let sum = 0;
+                for (let i of result) {
+                    sum += Number(i.sum.replace("$", ''))
                 }
-            let total = '$' + sum.toString()  
-               view.totalCheckOut(total)
+                let total = '$' + sum.toString()
+                view.totalCheckOut(total)
             });
-        
+
     } catch (error) {
         ShowErrorToast(error.message)
     }
 }
-model.updateShopBecomeEmty = async()=>{
+model.updateShopBecomeEmty = async () => {
     await db.collection('shopping').doc(auth.currentUser.email).update({
         product: []
     })
 }
 // dang nhap bang goole
 var ggProvider = new firebase.auth.GoogleAuthProvider();
-model.getTokenGoogle = ()=>{
-    firebase.auth().signInWithPopup(ggProvider).then(function(result) {
+model.getTokenGoogle = () => {
+    firebase.auth().signInWithPopup(ggProvider).then(function (result) {
         var token = result.credential.accessToken;
         console.log(token);
         var user = result.user;
-        console.log(user,1);
-    }).catch(function(error) {
+        console.log(user, 1);
+    }).catch(function (error) {
         console.log(error);
     });
 
+}
+
+// model update password 
+model.updatePassword = async (data) => {
+    
+    let response = await db.collection('user').doc(auth.currentUser.uid).get()
+    if (data.oldPassword == response.data().password) {
+        let user = auth.currentUser
+        await firebase.auth()
+            .signInWithEmailAndPassword(user.email, data.oldPassword)
+            .then(function (user) {
+                firebase.auth().currentUser.updatePassword(data.newPassword)
+                    .then(function () {
+                        ShowSuccessToast("You change password success")
+                        view.setScreenAtive('home')
+                    })
+                    .catch(function (err) {
+                        ShowErrorToast("change password not success")
+                    });
+            })
+            .catch(function (err) {
+                alert(err.message)
+            })
+        await db.collection('user').doc(auth.currentUser.uid).update({
+            password: data.newPassword
+        })
+    } else {
+        view.showError('old-password')
+        view.showMessageError('old-password', 'password is wong!!')
+        setTimeout(() => view.offError('old-password'), 2000)
+    }
+};
+
+// model showinfo
+model.showInfo = async()=>{
+    try {
+        await db.collection('user').get()
+        await db.collection("user").doc(auth.currentUser.uid)
+            .onSnapshot(doc => {
+                let result = doc.data()
+                console.log(result.email);
+                view.showInfoPage("mail",result.email);
+                view.showInfoName('left',result.name);
+                view.showInfoPage("phone",result.phone)
+                view.showInfoPage('gender',result.gender);
+                view.showInfoPage('national',result.national);
+                view.showInfoPage('age',result.age);
+                view.showInfoPage('birthday',result.birthday);
+                view.showInfoPage('left',result.job);
+            })
+    } catch (error) {
+        ShowErrorToast(error.message)
+    }
+}
+// model update lai thong tin user
+model.updateCollectionUser = async (data)=>{
+    try {
+        await db.collection('user').doc(auth.currentUser.uid).update(data)
+        ShowSuccessToast('Update success')
+        view.setScreenAtive("home")
+    } catch (error) {
+        ShowErrorToast("Update fail")
+    }
 }

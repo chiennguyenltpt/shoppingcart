@@ -111,7 +111,9 @@ controller.quantity = (data)=>{
 // render ra cac tinh thanh
 
 controller.getValueCard = (data)=>{
-    console.log(data);
+   
+   let re = /^(?:3[47][0-9]{13})$/;
+
     if(data.address ==''){
         ShowErrorToast("address is not blank")
     };
@@ -120,13 +122,57 @@ controller.getValueCard = (data)=>{
     };
     if (data.cardNumber=='') {
         ShowErrorToast("cardNumber can not be blank")
-    }else if(((new RegExp('.{1,4}', 'g')).join("-")).test(data.cardNumber)==false){
+    }else if(data.cardNumber.match(re)==false){
         ShowErrorToast('Number is not format')
     }
     
-    // model.pushValueUserBank(data)
+    model.pushValueUserBank(data)
 }
-// controller.remakeValueCard()
+
+// su ly du lieu tran thay doi mat khau
+controller.changePassword = (data)=>{
+    
+    if (data.oldPassword==""){
+        view.showError('old-password')
+        view.showMessageError('old-password','old-password can not be blank!!')
+        setTimeout(()=> view.offError('old-password'),2000)
+    }else if(data.oldPassword.length<8) {
+        view.showError('old-password')
+        view.showMessageError('old-password','old-password must have more than 8 chacarcter!!')
+        setTimeout(()=> view.offError('old-password'),2000)
+    }
+
+    if (data.newPassword==""){
+        view.showError('new-password')
+        view.showMessageError('new-password','new-password can not be blank!!')
+        setTimeout(()=> view.offError('new-password'),2000)
+    }else if(data.newPassword.length<8) {
+        view.showError('new-password')
+        view.showMessageError('new-password','new-password must have more than 8 chacarcter!!')
+        setTimeout(()=> view.offError('new-password'),2000)
+    }
+
+    if (data.confirmPassword==""){
+        view.showError('comfirm-password')
+        view.showMessageError('comfirm-password','comfirm-password can not be blank!!')
+        setTimeout(()=> view.offError('comfirm-password'),2000)
+    }else if(data.confirmPassword.length<8) {
+        view.showError('comfirm-password')
+        view.showMessageError('comfirm-password','comfirm-password must have more than 8 chacarcter!!')
+        setTimeout(()=> view.offError('comfirm-password'),2000)
+    }else if(data.newPassword!=data.confirmPassword){
+        view.showError('comfirm-password')
+        view.showMessageError('comfirm-password','comfirm-password is not the same new password!!')
+        setTimeout(()=> view.offError('comfirm-password'),2000)
+    }
+
+    if(data.oldPassword.length>8 && data.newPassword.length>8 &&data.newPassword==data.confirmPassword){
+        model.updatePassword(data)
+    }
+}
+
+
+
 // var models = [
 // 	{ id: 1, name: "samsung", seller_id: 1, count: 56 },
 // 	{ id: 1, name: "samsung", seller_id: 2, count: 68 },
@@ -149,6 +195,7 @@ controller.getValueCard = (data)=>{
 
 // lay gia tri tu trang reset ;
 controller.resetEmail = (data)=>{
+    
     if(data==''){
         view.showError('main-content')
         view.showMessageError('main-content','email can not be blank!!')
@@ -164,5 +211,61 @@ controller.resetEmail = (data)=>{
     }
 }
 
+// check validate cua trang update info
+controller.getValueUpdateInfoPage = (data)=>{
+    let re = /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/
+    if(data.job==""){
+        view.showError('job-detail')
+        view.showMessageError('job-detail','it can not be blank!!')
+        setTimeout(()=> view.offError('job-detail'),2000)
+    }
+    if(data.phone==""){
+        view.showError('phone-user')
+        view.showMessageError('phone-user','it can not be blank!!')
+        setTimeout(()=> view.offError('phone-user'),2000)
+    }else if (!re.test(data.phone)){
+        view.showError('phone-user')
+        view.showMessageError('phone-user','format is wrong!!')
+        setTimeout(()=> view.offError('phone-user'),2000)
+    }
+    if(data.birthday==""){
+        view.showError('birthday-user')
+        view.showMessageError('birthday-user','it can not be blank!!')
+        setTimeout(()=> view.offError('birthday-user'),2000)
+    };
+    if(data.age==""){
+        view.showError('age-user')
+        view.showMessageError('age-user','it can not be blank!!')
+        setTimeout(()=> view.offError('age-user'),2000)
+    };
+    if(data.national==""){
+        view.showError('national-user')
+        view.showMessageError('national-user','it can not be blank!!')
+        setTimeout(()=> view.offError('national-user'),2000)
+    }
+    if(data.address==""){
+        view.showError('address-user')
+        view.showMessageError('address-user','it can not be blank!!')
+        setTimeout(()=> view.offError('address-user'),2000)
+    }
+    if(data.gender==""){
+        view.showError('gender-user')
+        view.showMessageError('gender-user','it can not be blank!!')
+        setTimeout(()=> view.offError('gender-user'),2000)
+    }
+    if(data.img==""){
+        view.showError('img-user')
+        view.showMessageError('img-user','it can not be blank!!')
+        setTimeout(()=> view.offError('img-user'),2000)
+    }
+    if(data.job!="" && data.phone!="" && data.birthday!='' && data.age!="" && data.national!=""
+    && data.address!="" && data.gender!="" && data.img!="" && re.test(data.phone)){
+
+        model.updateCollectionUser(data) 
+      
+    }
+
+
+}
 
 

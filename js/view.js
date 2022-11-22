@@ -43,7 +43,7 @@ view.totalCheckOut = (value)=>{
     valueCheckOut.innerHTML = value
 }
 
-
+let value 
 //ham click thanh search
 let search = document.getElementById('search')
 search.addEventListener("click",(e)=>{
@@ -61,6 +61,14 @@ apple.addEventListener('click', ()=>{
     iphone.addEventListener('click',()=>{
         view.setScreenAtive('home')
     })
+
+// funct tao giao dien cho trang show info
+view.showInfoPage = (classitem,value)=>{
+    document.querySelector(`.${classitem} p`).innerHTML  = value;
+};
+view.showInfoName = (classitem,value)=>{
+    document.querySelector(`.${classitem} h4`).innerHTML  = value;
+}
 
 // truong hop cac man hinh
 view.setScreenAtive = (screenName) => {
@@ -127,7 +135,18 @@ view.setScreenAtive = (screenName) => {
             cart.addEventListener('click', (e) => {
                 e.preventDefault()
                 view.setScreenAtive("purchase");
-            });
+            }); 
+
+            // su kien click changepassword
+            changePassword.addEventListener('click',()=>{
+                view.setScreenAtive('changepassword')
+            })
+
+            // bat su kien chuyen tran show info;
+            showInfo.addEventListener('click',()=>{
+                view.setScreenAtive('showInfo')
+                
+            })
             break;
 
         // man dang ky
@@ -192,7 +211,6 @@ view.setScreenAtive = (screenName) => {
         case 'purchase':
             document.getElementById('app').innerHTML = component.purchase;
             model.getShoppingValue()
-
             view.showCard = (data) => {
                 let layout = ''
                 for (i = 0; i < data.length; i++) {
@@ -312,29 +330,69 @@ view.setScreenAtive = (screenName) => {
                 let lists = document.querySelectorAll('.item-slide')
                 document.getElementById("slide").prepend(lists[lists.length - 1])
             }
+            break;
+        case 'changepassword':
+            document.getElementById('app').innerHTML = component.changepassword;
+            let oldPassword = document.querySelector('.old-password input');
+            let newPassword = document.querySelector('.new-password input');
+            let confirmPassword = document.querySelector('.comfirm-password input');
+            let btnChangePassword = document.querySelector('button')
+            btnChangePassword.addEventListener('click',()=>{
+                const dataChangePassWord = {
+                    oldPassword:oldPassword.value,
+                    newPassword:newPassword.value,
+                    confirmPassword:confirmPassword.value
+                }
+                controller.changePassword(dataChangePassWord)
+            })
 
+            
+            break
+        case 'showInfo' :
+                document.getElementById("app").innerHTML = component.showInfo;
+                model.showInfo()
+                let btn_update =document.getElementById('btn-update')
+                btn_update.addEventListener('click',()=>{
+                    view.setScreenAtive('updateInfo')
+                })
+            break;
+// case cap nhat
+        case 'updateInfo':
+            document.getElementById("app").innerHTML= component.updateInfo;
+            let job = document.querySelector('.job');
+            let phone = document.querySelector('.phone');
+            let birthday = document.querySelector("#birthday")
+            let age = document.querySelector('.age');
+            let national = document.querySelector(".national");
+            let address = document.querySelector('.address');
+            let gender = document.querySelector('.gender');
+            let image = document.querySelector('.imgUser')
 
-
-
-
-
-
-
-
-
-
-
-
-
+            let btn_info = document.querySelector(".btn-info button");
+            btn_info.addEventListener('click' , ()=>{
+                
+                const valueInfoUser = {
+                    job:job.value,
+                    phone:phone.value,
+                    birthday:birthday.value,
+                    age:age.value,
+                    national:national.value,
+                    address:address.value,
+                    gender:gender.value,
+                    img:image.value
+                }
+    
+                controller.getValueUpdateInfoPage(valueInfoUser)
+            })
 
 
             break;
-
         case 'resetpassword':
             document.getElementById('app').innerHTML = component.resetEmail;
             let btn = document.querySelector('button')
-            let valueInput = document.querySelector('input');
+            let valueInput = document.querySelector('.main-content input');
             btn.addEventListener('click', () => {
+                
                 let resultValue = valueInput.value;
                 controller.resetEmail(resultValue)
             })
@@ -344,6 +402,54 @@ view.setScreenAtive = (screenName) => {
             break;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

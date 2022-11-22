@@ -1,9 +1,9 @@
-window.onload = async() => {
+window.onload = () => {
     firebase.auth().onAuthStateChanged( (user)=> {
         if(user) {
             view.dataUser(auth.currentUser.displayName)
-            view.setScreenAtive('home')
-           
+            view.setScreenAtive('updateInfo')
+               
         } else{
             view.setScreenAtive('login');
         }

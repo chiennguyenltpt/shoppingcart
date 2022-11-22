@@ -89,10 +89,18 @@ body{
     cursor: pointer;
 }
 #google{
-    width: 50px;
+    width: 70px;
     position:absolute;
-    bottom: 50px;
-    right: 100px;
+    bottom: 15px;
+    right: 130px;
+    cursor: pointer;
+}
+#facebook{
+  height: 30px;
+  width: 30px;
+    position: absolute;
+    bottom: 20px;
+    left: 130px;
     cursor: pointer;
 }
 
