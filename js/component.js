@@ -39,7 +39,6 @@ const listData = [
     { name: 'Iphone34', price: '$299', img: '../image/iphone1.png' },
     { name: 'Iphone35', price: '$678', img: '../image/iphone7-removebg-preview (1).png' },
     { name: 'Iphone36', price: '$868', img: "../image/iphone4-removebg-preview.png" },
-
 ]
 let layout = ''
 for (let i = 0; i < listData.length; i++) {
@@ -354,8 +353,8 @@ component.resetEmail = `<div class="send-email">
 component.showInfo =`
 <div class="wrapper">
 <div class="left">
-    <img src="../image/avatar.jpeg" 
-    alt="user" width="100">
+    <img class="img-user" src="../image/avatar.jpeg" 
+    alt="user" width="200"> 
     <h4>Alexander Dade</h4>
      <p>Anh Công Nhân</p>
 </div>

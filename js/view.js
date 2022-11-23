@@ -4,6 +4,10 @@ var dataUserName = ''
 view.dataUser = (dataUser) => {
     dataUserName = dataUser
 }
+
+view.avatar = ()=>{
+    avartar.src = auth.currentUser.photoURL
+}
 view.showError = (classItem) => {
     document.querySelector(`.${classItem} small`).style.visibility = 'visible'
 };
@@ -24,7 +28,7 @@ view.logOut();
 // them the khi nguoi dung nhap vao
 view.addUserMessage = (message) => {
     var html = `<div class=" box box1">
-                    <p class="user">${message}</p><img src="./image/avatar.jpeg" id='img-user'>
+                    <p class="user">${message}</p><img src="${auth.currentUser.photoURL}" id='img-user'>
                 </div>`
     document.getElementsByClassName('content')[0].innerHTML += html
 }
@@ -69,6 +73,13 @@ view.showInfoPage = (classitem,value)=>{
 view.showInfoName = (classitem,value)=>{
     document.querySelector(`.${classitem} h4`).innerHTML  = value;
 }
+// ham lay anh de apdate avatar
+view.updateAvatar = ()=>{
+    let avatarUrl = document.querySelector('.img-user')
+    console.log();
+    avatarUrl.src = auth.currentUser.photoURL;
+}
+
 
 // truong hop cac man hinh
 view.setScreenAtive = (screenName) => {
@@ -349,7 +360,8 @@ view.setScreenAtive = (screenName) => {
             
             break
         case 'showInfo' :
-                document.getElementById("app").innerHTML = component.showInfo;
+            document.getElementById("app").innerHTML = component.showInfo;
+            view.updateAvatar()
                 model.showInfo()
                 let btn_update =document.getElementById('btn-update')
                 btn_update.addEventListener('click',()=>{
@@ -358,6 +370,7 @@ view.setScreenAtive = (screenName) => {
             break;
 // case cap nhat
         case 'updateInfo':
+            console.log(auth.currentUser.photoURL);
             document.getElementById("app").innerHTML= component.updateInfo;
             let job = document.querySelector('.job');
             let phone = document.querySelector('.phone');
@@ -378,13 +391,11 @@ view.setScreenAtive = (screenName) => {
                     age:age.value,
                     national:national.value,
                     address:address.value,
-                    gender:gender.value,
-                    img:image.value
+                    gender:gender.value,    
                 }
-    
                 controller.getValueUpdateInfoPage(valueInfoUser)
+                model.pushValueImgToStorage(image.files[0])
             })
-
 
             break;
         case 'resetpassword':

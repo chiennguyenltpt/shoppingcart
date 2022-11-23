@@ -11,6 +11,8 @@ const firebaseApp = firebase.initializeApp({
 const db = firebaseApp.firestore();
 const auth = firebaseApp.auth();
 const database = firebase.database();
+const storage = firebase.storage();
+
 model.register = async (data) => {
 
     try {
@@ -347,7 +349,7 @@ model.getTokenGoogle = () => {
 
 // model update password 
 model.updatePassword = async (data) => {
-    
+
     let response = await db.collection('user').doc(auth.currentUser.uid).get()
     if (data.oldPassword == response.data().password) {
         let user = auth.currentUser
@@ -377,28 +379,30 @@ model.updatePassword = async (data) => {
 };
 
 // model showinfo
-model.showInfo = async()=>{
+model.showInfo = async () => {
     try {
         await db.collection('user').get()
         await db.collection("user").doc(auth.currentUser.uid)
             .onSnapshot(doc => {
                 let result = doc.data()
-                console.log(result.email);
-                view.showInfoPage("mail",result.email);
-                view.showInfoName('left',result.name);
-                view.showInfoPage("phone",result.phone)
-                view.showInfoPage('gender',result.gender);
-                view.showInfoPage('national',result.national);
-                view.showInfoPage('age',result.age);
-                view.showInfoPage('birthday',result.birthday);
-                view.showInfoPage('left',result.job);
+                view.updateAvatar()
+                view.showInfoPage("mail", result.email);
+                view.showInfoName('left', result.name);
+                view.showInfoPage("phone", result.phone)
+                view.showInfoPage('gender', result.gender);
+                view.showInfoPage('national', result.national);
+                view.showInfoPage('age', result.age);
+                view.showInfoPage('birthday', result.birthday);
+                view.showInfoPage('left', result.job);
+                // view.updateAvatar()
             })
     } catch (error) {
         ShowErrorToast(error.message)
     }
 }
 // model update lai thong tin user
-model.updateCollectionUser = async (data)=>{
+model.updateCollectionUser = async (data) => {
+    console.log(data);
     try {
         await db.collection('user').doc(auth.currentUser.uid).update(data)
         ShowSuccessToast('Update success')
@@ -406,4 +410,38 @@ model.updateCollectionUser = async (data)=>{
     } catch (error) {
         ShowErrorToast("Update fail")
     }
+}
+// model day anh len storeage
+model.pushValueImgToStorage = async (data) => {
+    let ref = storage.ref(auth.currentUser.email)
+    let metadata = {
+        contentType: data.type,
+    }
+    let nameFile = data.name
+    let uploadImg = ref.child(nameFile).put(data, metadata);
+    await uploadImg
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+            console.log(url);
+            auth.currentUser.updateProfile({
+                photoURL: url
+            })
+            view.avatar()
+        })
+        .catch(console.error)
+}
+
+// ham lay giu lieu ve
+model.getUrlStorage = async () => {
+    try {
+        let ref = storage.ref()
+        await ref.child(auth.currentUser.email).listAll()
+            .then(result => result.items)
+            .then(data => data.forEach(async (item) => {
+                console.log(await item.getDownloadURL());
+            }))
+    } catch (error) {
+
+    }
+
 }

@@ -125,8 +125,9 @@ controller.getValueCard = (data)=>{
     }else if(data.cardNumber.match(re)==false){
         ShowErrorToast('Number is not format')
     }
-    
-    model.pushValueUserBank(data)
+    if(data.address!="" && data.city!="" && data.cardNumber!='' && data.cardNumber.match(re)){
+        model.pushValueUserBank(data)
+    }
 }
 
 // su ly du lieu tran thay doi mat khau
@@ -260,9 +261,7 @@ controller.getValueUpdateInfoPage = (data)=>{
     }
     if(data.job!="" && data.phone!="" && data.birthday!='' && data.age!="" && data.national!=""
     && data.address!="" && data.gender!="" && data.img!="" && re.test(data.phone)){
-
         model.updateCollectionUser(data) 
-      
     }
 
 
