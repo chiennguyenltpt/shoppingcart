@@ -17,14 +17,12 @@ model.register = async (data) => {
 
     try {
         await auth.createUserWithEmailAndPassword(data.email, data.password);
-        await auth.currentUser.sendEmailVerification();
+         auth.currentUser.sendEmailVerification();
         ShowSuccessToast('Success')
-        firebase.auth().signOut()
-        view.setScreenAtive('login');
-        db.collection('user').doc(auth.currentUser.uid).set(
+     await   db.collection('user').doc(auth.currentUser.uid).set(
             data
-        )
-
+            )
+        view.setScreenAtive('login')
     } catch (error) {
         ShowErrorToast(error.message)
     }
@@ -41,16 +39,17 @@ model.login = async (data) => {
             }
         });
         let response = await auth.signInWithEmailAndPassword(data.email, data.password);
-
-        if (auth.currentUser.emailVerified && response) {
+        console.log(auth.currentUser.emailVerified);
+        if (auth.currentUser.emailVerified ==true && response) {
             ShowSuccessToast("Login Success")
-            view.dataUser(auth.currentUser.displayName)
-            view.setScreenAtive('home')
+            //  view.dataUser(auth.currentUser.displayName)
+             view.setScreenAtive('home')
         };
 
         await auth.currentUser.updateProfile({
             displayName: username,
         })
+        return;
     } catch (error) {
         alert(error.message)
     }
@@ -86,6 +85,8 @@ model.chatapp()
 model.getMessageValue = async (data) => {
     try {
         let response = await db.collection("chatapp").doc("chatbox").get()
+        let userInfo = await db.collection('user').get()
+        let valueSum = userInfo.docs
         let result = response.data().message
         for (i in result) {
             if (auth.currentUser.email == result[i].name) {
@@ -94,7 +95,11 @@ model.getMessageValue = async (data) => {
                 if (i == result.length - 1) {
                     break
                 } else {
-                    view.addBotMessage(result[i].message)
+                    for(let j =0;j<valueSum.length;j++){
+                        if(valueSum[j].data().email==result[i].name){
+                            view.addBotMessage(result[i].message,valueSum[j].data().link)
+                        }
+                    }
                 }
             }
         }
@@ -104,7 +109,12 @@ model.getMessageValue = async (data) => {
                 let messageValue = message[0].message
                 let lastMessage = messageValue[messageValue.length - 1]
                 if (auth.currentUser.email != lastMessage.name) {
-                    view.addBotMessage(lastMessage.message)
+                    // view.addBotMessage(lastMessage.message)
+                    for(let j =0;j<valueSum.length;j++){
+                        if(valueSum[j].data().email==lastMessage.name){
+                            view.addBotMessage(lastMessage.message,valueSum[j].data().link)
+                        }
+                    }
                 }
             });
     } catch (error) {
@@ -402,7 +412,6 @@ model.showInfo = async () => {
 }
 // model update lai thong tin user
 model.updateCollectionUser = async (data) => {
-    console.log(data);
     try {
         await db.collection('user').doc(auth.currentUser.uid).update(data)
         ShowSuccessToast('Update success')
@@ -423,10 +432,11 @@ model.pushValueImgToStorage = async (data) => {
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then(url => {
             console.log(url);
+             db.collection('user').doc(auth.currentUser.uid).update({link:url})
             auth.currentUser.updateProfile({
                 photoURL: url
             })
-            view.avatar()
+            view.updateAvatar()
         })
         .catch(console.error)
 }

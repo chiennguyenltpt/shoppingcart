@@ -458,6 +458,7 @@ component.updateInfo = `
 </div>
 <div class="btn-info">
     <button>Update</button>
+    <button id='btn-updateAvatar' >Update avarta</button>
 </div>
 
 </div>

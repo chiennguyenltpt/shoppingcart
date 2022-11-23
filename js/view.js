@@ -5,9 +5,14 @@ view.dataUser = (dataUser) => {
     dataUserName = dataUser
 }
 
-view.avatar = ()=>{
-    avartar.src = auth.currentUser.photoURL
-}
+ view.avatar = ()=>{
+        if (auth.currentUser.photoURL==null) {
+            auth.currentUser.photoURL = "./image/avatar-null.png"
+            avartar.src = "./image/avatar-null.png"
+        }else{
+            avartar.src = auth.currentUser.photoURL
+        }
+    }
 view.showError = (classItem) => {
     document.querySelector(`.${classItem} small`).style.visibility = 'visible'
 };
@@ -20,8 +25,9 @@ view.offError = (classItem) => {
 view.logOut = () => {
     document.getElementById('logout').addEventListener('click', () => {
         document.getElementById('user').innerHTML = ''
-        firebase.auth().signOut()
-    })
+        avartar.src = "./image/avatar-null.png"
+        firebase.auth().signOut();
+    });
 };
 view.logOut();
 
@@ -34,9 +40,9 @@ view.addUserMessage = (message) => {
 }
 
 // the khi nguoi thu2 nhap vao
-view.addBotMessage = (message) => {
+view.addBotMessage = (message,url) => {
     var html = ` <div class="box box2">
-                    <img src="./image/anhcho.jpeg" id='img-user'><p class="bot">${message}</p>
+                    <img src="${url}" id='img-user'><p class="bot">${message}</p>
                 </div>
                 `
     document.getElementsByClassName('content')[0].innerHTML += html
@@ -76,7 +82,6 @@ view.showInfoName = (classitem,value)=>{
 // ham lay anh de apdate avatar
 view.updateAvatar = ()=>{
     let avatarUrl = document.querySelector('.img-user')
-    console.log();
     avatarUrl.src = auth.currentUser.photoURL;
 }
 
@@ -86,7 +91,7 @@ view.setScreenAtive = (screenName) => {
     switch (screenName) {
         case 'home':
             let app = document.getElementById('app');
-            document.getElementById('user').innerHTML = dataUserName;
+            document.getElementById('user').innerHTML = auth.currentUser.displayName;
             app.innerHTML = component.home;
             // click hien thi chat boxx
             model.realTimeTotal()
@@ -158,6 +163,12 @@ view.setScreenAtive = (screenName) => {
                 view.setScreenAtive('showInfo')
                 
             })
+
+            document.getElementById('logout').addEventListener('click', () => {
+                document.getElementById('user').innerHTML = ''
+                firebase.auth().signOut();
+                window.onload();
+            });
             break;
 
         // man dang ky
@@ -193,6 +204,7 @@ view.setScreenAtive = (screenName) => {
                 }
                 controller.login(dataLogin)
             });
+
             document.getElementById('signup').onclick = () => {
                 view.setScreenAtive('register')
             }
@@ -380,7 +392,7 @@ view.setScreenAtive = (screenName) => {
             let address = document.querySelector('.address');
             let gender = document.querySelector('.gender');
             let image = document.querySelector('.imgUser')
-
+            let btn_updateAvatar = document.getElementById('btn-updateAvatar');
             let btn_info = document.querySelector(".btn-info button");
             btn_info.addEventListener('click' , ()=>{
                 
@@ -396,6 +408,12 @@ view.setScreenAtive = (screenName) => {
                 controller.getValueUpdateInfoPage(valueInfoUser)
                 model.pushValueImgToStorage(image.files[0])
             })
+            // bat su kien click update avatar
+            btn_updateAvatar.addEventListener('click',()=>{
+                model.pushValueImgToStorage(image.files[0])
+                view.setScreenAtive('home')
+                window.onload()
+            })
 
             break;
         case 'resetpassword':
@@ -408,7 +426,6 @@ view.setScreenAtive = (screenName) => {
                 controller.resetEmail(resultValue)
             })
             break;
-
         default:
             break;
     }

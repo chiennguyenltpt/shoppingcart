@@ -1,10 +1,12 @@
 window.onload = () => {
     firebase.auth().onAuthStateChanged( (user)=> {
-        view.avatar()
         if(user) {
-            view.dataUser(auth.currentUser.displayName)
-            view.setScreenAtive('home')
-            console.log(auth.currentUser.photoURL);
+            const flag = false;
+            if(auth.currentUser.emailVerified && flag==false){
+                view.setScreenAtive('home')
+                view.dataUser(auth.currentUser.displayName)
+                view.avatar()
+            }
         } else{
             view.setScreenAtive('login');
         }
