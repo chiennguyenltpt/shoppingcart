@@ -111,6 +111,7 @@ controller.quantity = (data)=>{
 // render ra cac tinh thanh
 
 controller.getValueCard = (data)=>{
+    console.log(data);
    
    let re = /^(?:3[47][0-9]{13})$/;
 
@@ -122,14 +123,16 @@ controller.getValueCard = (data)=>{
     };
     if (data.cardNumber=='') {
         ShowErrorToast("cardNumber can not be blank")
-    }else if(data.cardNumber.match(re)==false){
+    }else if(re.test(data.cardNumber)==false){
         ShowErrorToast('Number is not format')
     }
-    if(data.address!="" && data.city!="" && data.cardNumber!='' && data.cardNumber.match(re)){
+    console.log(re.test(data.cardNumber))
+    if(data.address!="" && data.city!="" && data.cardNumber!='' && re.test(data.cardNumber)){
+        console.log(1);
         model.pushValueUserBank(data)
+        model.updateShopBecomeEmty()  
     }
 }
-
 // su ly du lieu tran thay doi mat khau
 controller.changePassword = (data)=>{
     

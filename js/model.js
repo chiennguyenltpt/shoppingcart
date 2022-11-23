@@ -314,6 +314,7 @@ model.pushValueUserBank = async (data) => {
             })
         }
         ShowSuccessToast("You Payed success")
+         
     } catch (error) {
         console.log(error.message);
     }
@@ -453,5 +454,4 @@ model.getUrlStorage = async () => {
     } catch (error) {
 
     }
-
 }

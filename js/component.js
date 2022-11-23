@@ -234,7 +234,7 @@ component.payment = `
                     <br><br>
     
                     Credit card number <br>
-                <input type="text" name="" class= 'infoUser'  placeholder="Visa card starting with 4, length 13 or 16 digits"><br>
+                <input type="text" name="" class= 'infoUser'  placeholder="Visa card starting with 347, length 13 or 16 digits"><br>
                
                     Exp month<br>
                     <input type="text" name="" class= 'infoUser'  placeholder="Enter Month"><br>

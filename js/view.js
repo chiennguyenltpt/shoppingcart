@@ -324,9 +324,7 @@ view.setScreenAtive = (screenName) => {
             model.getApiCity();
             model.getPriceTotal()
             btn_checkout.addEventListener('click', () => {
-                console.log(1);
                 const infoUser = document.getElementsByClassName("infoUser");
-
                 const dataUser = {
                     name: infoUser[0].value,
                     email: infoUser[1].value,
@@ -336,7 +334,7 @@ view.setScreenAtive = (screenName) => {
                     expCard: infoUser[6].value,
                 }
                 controller.getValueCard(dataUser)
-                model.updateShopBecomeEmty()
+                
                 
             })
 
