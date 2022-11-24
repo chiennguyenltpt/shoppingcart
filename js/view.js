@@ -169,6 +169,22 @@ view.setScreenAtive = (screenName) => {
                 firebase.auth().signOut();
                 window.onload();
             });
+
+            //bat su kien click anh chuyen trang
+            let Img = document.querySelectorAll('.item img')
+            for(let i=0;i<Img.length;i++){
+                Img[i].addEventListener('click',()=>{
+
+                    let dataDetail = {
+                        name:name[i].innerHTML,
+                        price: price[i].innerHTML,
+                        img:Img[i].src
+                    }
+                    view.setScreenAtive('commentPage')
+                    view.renderDetailProduct(dataDetail)
+                })
+            }
+
             break;
 
         // man dang ky
@@ -218,16 +234,10 @@ view.setScreenAtive = (screenName) => {
             google.addEventListener('click',()=>{
                 model.getTokenGoogle()
             })
-            // firebase.auth().sendPasswordResetEmail('manhchienltpt@gmail.com')
-            // .then(() => {
-            //   alert('hih')
-            //   // ..
-            // })
-            // .catch((error) => {
-            //   var errorCode = error.code;
-            //   var errorMessage = error.message;
-            //   alert(errorCode)
-            // });
+            // bat su kien dang nhap bang facebook
+            facebook.addEventListener('click' ,()=>{
+                model.getTokenFacebook()
+            })
 
             break;
 
@@ -412,7 +422,6 @@ view.setScreenAtive = (screenName) => {
                 view.setScreenAtive('home')
                 window.onload()
             })
-
             break;
         case 'resetpassword':
             document.getElementById('app').innerHTML = component.resetEmail;
@@ -423,6 +432,17 @@ view.setScreenAtive = (screenName) => {
                 let resultValue = valueInput.value;
                 controller.resetEmail(resultValue)
             })
+            break;
+        case "commentPage" :
+                document.getElementById('app').innerHTML =component.commentPage;
+
+                view.renderDetailProduct = (data)=>{
+                    console.log(data);
+                    document.querySelector('.img-product img').src = `${data.src}`
+                    document.querySelector('.text-detail').innerHTML = data.name;
+                    console.log(listData);
+
+                }
             break;
         default:
             break;

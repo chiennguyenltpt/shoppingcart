@@ -462,8 +462,46 @@ component.updateInfo = `
 </div>
 
 </div>
-
-  
-
 </div>
 `
+
+
+
+component.commentPage = `<div class="main-detail">
+<div class="div1"></div>
+<div class="div2"></div>
+<div class="div3"></div>
+<div class="div4"></div>
+
+<div class="maintain">
+    <div class="img-detail">
+        <div class="img-product">
+            <img src="../image/iphone4-removebg-preview.png" alt="">
+        </div>
+    </div>
+    <div class="text-detail">
+        IPhoneX
+    </div>
+    <div class="feedback">
+                    <i class="fa-regular fa-star text-yellow"></i>
+                    <i class="fa-regular fa-star text-yellow"></i>
+                    <i class="fa-regular fa-star text-yellow"></i>
+                    <i class="fa-regular fa-star text-yellow"></i>
+                    <i class="fa-regular fa-star"></i>
+    </div>
+    <div class="choice-color">
+        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
+        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
+        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
+    </div>
+    <div class="comment-text">
+        <input type="text"><button>Comment</button>
+        <div class="main-content">
+
+        </div>
+    </div>
+    <div class="buynow">
+        <button>buynow</button>
+    </div>
+</div>
+</div>`

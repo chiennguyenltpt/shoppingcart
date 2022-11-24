@@ -357,6 +357,19 @@ model.getTokenGoogle = () => {
     });
 
 }
+var fbProvider = new firebase.auth.FacebookAuthProvider()
+// dang nhap bang facebôk
+model.getTokenFacebook = ()=>{
+    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
+        var token = result.credential.accessToken;
+        console.log(token);
+        var user = result.user;
+        console.log(user,1);
+    
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
 
 // model update password 
 model.updatePassword = async (data) => {
@@ -436,8 +449,8 @@ model.pushValueImgToStorage = async (data) => {
              db.collection('user').doc(auth.currentUser.uid).update({link:url})
             auth.currentUser.updateProfile({
                 photoURL: url
-            })
-            view.updateAvatar()
+            });
+            view.updateAvatar();
         })
         .catch(console.error)
 }
