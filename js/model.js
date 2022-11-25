@@ -358,7 +358,7 @@ model.getTokenGoogle = () => {
 // dang nhap bang facebôk
 var fbProvider = new firebase.auth.FacebookAuthProvider()
 model.getTokenFacebook = ()=>{
-    fbProvider.addScope( "multiFactor")
+    fbProvider.addScope( "providerData")
     fbProvider.setCustomParameters({
         'display': 'popup'
       });
