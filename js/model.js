@@ -359,15 +359,43 @@ model.getTokenGoogle = () => {
 var fbProvider = new firebase.auth.FacebookAuthProvider()
 model.getTokenFacebook = ()=>{
     // fbProvider.addScope( "email")
-    console.log(fbProvider,11);
-    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
-    var credential = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    console.log(credential,111);
-    console.log(user,22);
-    }).catch(function (error) {
-        console.log(error);
+    // console.log(fbProvider,'aa');
+    // firebase.auth().signInWithPopup(fbProvider).then(function(result) {
+    // var credential = result.credential.accessToken;
+    // // The signed-in user info.
+    // var user = result.user;
+    // console.log(credential,111);
+    // console.log(user,22);
+    // }).catch(function (error) {
+    //     console.log(error);
+    // });
+
+
+    firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+
+      // The signed-in user info.
+      var user = result.user;
+
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var accessToken = credential.accessToken;
+
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+
+      // ...
     });
 }
 
