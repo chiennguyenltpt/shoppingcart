@@ -357,30 +357,30 @@ model.getTokenGoogle = () => {
 }
 // dang nhap bang facebôk
 var provider = new firebase.auth.FacebookAuthProvider();
-model.getTokenFacebook = () => {
-    firebase
+model.getTokenFacebook = async () => {
+    await firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
             var credential = result.credential;
             var user = result.user;   // This gives you a Facebook Access Token. You can use it to access the Facebook API.
             var accessToken = credential.accessToken;
-            // ...
+            firebase.auth()
+                .signInWithCredential(accessToken)
+                .then((result) => {
+                    // Signed in
+                    console.log(result);
+                })
+                .catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // The email of the user's account used.
+                    const email = error.email;
+                    // ...
+                });
         })
-    firebase.auth()
-        .signInWithCredential(credential)
-        .then((result) => {
-            // Signed in
-            console.log(result);
-        })
-        .catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.email;
-            // ...
-        });
+
 }
 
 // model update password 
