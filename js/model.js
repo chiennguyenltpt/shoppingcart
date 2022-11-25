@@ -375,7 +375,6 @@ model.getTokenFacebook = ()=>{
     .auth()
     .signInWithPopup(provider)
     .then((result) => {
-        auth.currentUser.email = 'chiennguyenltpt@gmail.com'
         console.log(auth.currentUser,'auth');
         console.log(result , 'result');
       /** @type {firebase.auth.OAuthCredential} */
@@ -387,6 +386,7 @@ model.getTokenFacebook = ()=>{
         console.log(user);
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var accessToken = credential.accessToken;
+      console.log(accessToken,"44444444");
 
       // ...
     })
