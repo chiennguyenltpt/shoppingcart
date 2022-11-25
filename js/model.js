@@ -33,6 +33,7 @@ model.login = async (data) => {
     try {
         let infoDb = await db.collection("user").get()
         let username;
+        console.log(infoDb)
         infoDb.docs.filter((doc) => {
             if ((doc.data().email == data.email)) {
                 username = doc.data().name
