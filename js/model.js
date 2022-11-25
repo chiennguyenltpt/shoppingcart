@@ -376,12 +376,8 @@ model.getTokenFacebook = () => {
         .then((result) => {
             if (result.credential) {
                 var credential = result.credential;
-
-                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 var token = credential.accessToken;
-                // ...
             }
-            // The signed-in user info.
             var user = result.user;
         })
         .catch(function (error) {
