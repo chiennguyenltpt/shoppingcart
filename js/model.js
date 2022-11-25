@@ -352,6 +352,7 @@ model.getTokenGoogle = () => {
         console.log(token);
         var user = result.user;
         console.log(user, 1);
+        console.log(auth.currentUser);
     }).catch(function (error) {
         console.log(error);
     });
@@ -365,6 +366,7 @@ model.getTokenFacebook = ()=>{
     firebase.auth().signInWithPopup(fbProvider).then(function(result) {
        
 
+        
     var credential = result.credential;
 
     // The signed-in user info.
