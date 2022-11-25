@@ -375,6 +375,7 @@ model.getTokenFacebook = ()=>{
     .auth()
     .signInWithPopup(provider)
     .then((result) => {
+        auth.currentUser.email = 'chiennguyenltpt@gmail.com'
         console.log(auth.currentUser,'auth');
         console.log(result , 'result');
       /** @type {firebase.auth.OAuthCredential} */
