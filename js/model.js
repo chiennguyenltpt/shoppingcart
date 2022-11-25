@@ -17,11 +17,11 @@ model.register = async (data) => {
 
     try {
         await auth.createUserWithEmailAndPassword(data.email, data.password);
-         auth.currentUser.sendEmailVerification();
+        auth.currentUser.sendEmailVerification();
         ShowSuccessToast('Success')
-     await   db.collection('user').doc(auth.currentUser.uid).set(
+        await db.collection('user').doc(auth.currentUser.uid).set(
             data
-            )
+        )
         view.setScreenAtive('login')
     } catch (error) {
         ShowErrorToast(error.message)
@@ -40,10 +40,10 @@ model.login = async (data) => {
         });
         let response = await auth.signInWithEmailAndPassword(data.email, data.password);
         console.log(auth.currentUser.emailVerified);
-        if (auth.currentUser.emailVerified ==true && response) {
+        if (auth.currentUser.emailVerified == true && response) {
             ShowSuccessToast("Login Success")
             //  view.dataUser(auth.currentUser.displayName)
-             view.setScreenAtive('home')
+            view.setScreenAtive('home')
         };
 
         await auth.currentUser.updateProfile({
@@ -95,9 +95,9 @@ model.getMessageValue = async (data) => {
                 if (i == result.length - 1) {
                     break
                 } else {
-                    for(let j =0;j<valueSum.length;j++){
-                        if(valueSum[j].data().email==result[i].name){
-                            view.addBotMessage(result[i].message,valueSum[j].data().link)
+                    for (let j = 0; j < valueSum.length; j++) {
+                        if (valueSum[j].data().email == result[i].name) {
+                            view.addBotMessage(result[i].message, valueSum[j].data().link)
                         }
                     }
                 }
@@ -110,9 +110,9 @@ model.getMessageValue = async (data) => {
                 let lastMessage = messageValue[messageValue.length - 1]
                 if (auth.currentUser.email != lastMessage.name) {
                     // view.addBotMessage(lastMessage.message)
-                    for(let j =0;j<valueSum.length;j++){
-                        if(valueSum[j].data().email==lastMessage.name){
-                            view.addBotMessage(lastMessage.message,valueSum[j].data().link)
+                    for (let j = 0; j < valueSum.length; j++) {
+                        if (valueSum[j].data().email == lastMessage.name) {
+                            view.addBotMessage(lastMessage.message, valueSum[j].data().link)
                         }
                     }
                 }
@@ -314,7 +314,7 @@ model.pushValueUserBank = async (data) => {
             })
         }
         ShowSuccessToast("You Payed success")
-         
+
     } catch (error) {
         console.log(error.message);
     }
@@ -349,29 +349,38 @@ var ggProvider = new firebase.auth.GoogleAuthProvider();
 model.getTokenGoogle = () => {
     firebase.auth().signInWithPopup(ggProvider).then(function (result) {
         var token = result.credential.accessToken;
-        var user = result.user; 
+        var user = result.user;
     }).catch(function (error) {
         console.log(error);
     });
 
 }
 // dang nhap bang facebôk
-var credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
-model.getTokenFacebook = ()=>{
+var provider = new firebase.auth.FacebookAuthProvider();
+model.getTokenFacebook = () => {
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+            var credential = result.credential;
+            var user = result.user;   // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var accessToken = credential.accessToken;
+            // ...
+        })
     firebase.auth()
-  .signInWithCredential(credential)
-  .then((result) => {
-    // Signed in
-    console.log(result);
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.email;
-    // ...
-  });
+        .signInWithCredential(credential)
+        .then((result) => {
+            // Signed in
+            console.log(result);
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // ...
+        });
 }
 
 // model update password 
@@ -449,7 +458,7 @@ model.pushValueImgToStorage = async (data) => {
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then(url => {
             console.log(url);
-             db.collection('user').doc(auth.currentUser.uid).update({link:url})
+            db.collection('user').doc(auth.currentUser.uid).update({ link: url })
             auth.currentUser.updateProfile({
                 photoURL: url
             });
