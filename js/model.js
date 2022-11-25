@@ -349,10 +349,7 @@ var ggProvider = new firebase.auth.GoogleAuthProvider();
 model.getTokenGoogle = () => {
     firebase.auth().signInWithPopup(ggProvider).then(function (result) {
         var token = result.credential.accessToken;
-        console.log(token);
-        var user = result.user;
-        console.log(user, 1);
-        console.log(auth.currentUser);
+        var user = result.user; 
     }).catch(function (error) {
         console.log(error);
     });
@@ -374,6 +371,7 @@ model.getTokenFacebook = ()=>{
 
     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
     var accessToken = credential.accessToken;
+    console.log(accessToken, 'fb');
     
     }).catch(function (error) {
         console.log(error);
