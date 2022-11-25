@@ -367,10 +367,10 @@ model.getTokenFacebook = ()=>{
     // The signed-in user info.
     var user = result.user;
     console.log(credential,111);
-    console.log(user);
+    console.log(user.photoURL);
     view.setScreenAtive('home')
     let avatarUrl = document.querySelector('.img-user')
-    avatarUrl.src = auth.currentUser.photoURL;
+    avatarUrl.src = user.photoURL;
     }).catch(function (error) {
         console.log(error);
     });
