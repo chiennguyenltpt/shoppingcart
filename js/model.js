@@ -357,11 +357,12 @@ model.getTokenGoogle = () => {
     });
 
 }
-var fbProvider = new firebase.auth.FacebookAuthProvider()
 // dang nhap bang facebôk
 model.getTokenFacebook = ()=>{
-    firebase.auth().signInWithRedirect(fbProvider);
-    firebase.auth().getRedirectResult(fbProvider).then(function(result) {
+    var fbProvider = new firebase.auth.FacebookAuthProvider()
+    fbProvider.addScope('user_birthday','email','user_photos')
+    
+    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
         var token = result.credential.accessToken;
         console.log(token);
         var user = result.user;
