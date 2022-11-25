@@ -356,38 +356,20 @@ model.getTokenGoogle = () => {
 
 }
 // dang nhap bang facebôk
-var provider = new firebase.auth.FacebookAuthProvider();
+var fbProvider = new firebase.auth.FacebookAuthProvider()
 model.getTokenFacebook = ()=>{
-    var credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
-    firebase
-  .auth()
-  .signInWithPopup(provider)
-  .then((result) => {
-  console.log(credential)
-    var credential = result.credential;
-
+    fbProvider.addScope( "email")
+    fbProvider.setCustomParameters({
+        'display': 'popup'
+      });
+    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
+    var credential = result.credential.accessToken;
     // The signed-in user info.
     var user = result.user;
-
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var accessToken = credential.accessToken;
-
-    // ...
-  })
-    firebase.auth()
-  .signInWithCredential(credential)
-  .then((result) => {
-    // Signed in
-    console.log(result);
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.email;
-    // ...
-  });
+    console.log(credential,111);
+    }).catch(function (error) {
+        console.log(error);
+    });
 }
 
 // model update password 
