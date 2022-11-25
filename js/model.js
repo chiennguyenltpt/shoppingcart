@@ -370,7 +370,7 @@ model.getTokenFacebook = ()=>{
     //     console.log(error);
     // });
 
-
+    console.log(provider);
     firebase
     .auth()
     .signInWithPopup(provider)
