@@ -360,7 +360,7 @@ model.getTokenGoogle = () => {
 // dang nhap bang facebôk
 var fbProvider = new firebase.auth.FacebookAuthProvider()
 model.getTokenFacebook = ()=>{
-    fbProvider.addScope('user_birthday')
+    fbProvider.addScope('user_birthday', "email", "public_profile")
     
     firebase.auth().signInWithPopup(fbProvider).then(function(result) {
        
