@@ -435,13 +435,10 @@ view.setScreenAtive = (screenName) => {
             break;
         case "commentPage" :
                 document.getElementById('app').innerHTML =component.commentPage;
-
                 view.renderDetailProduct = (data)=>{
                     console.log(data);
-                    document.querySelector('.img-product img').src = `${data.src}`
                     document.querySelector('.text-detail').innerHTML = data.name;
                     console.log(listData);
-
                 }
             break;
         default:
