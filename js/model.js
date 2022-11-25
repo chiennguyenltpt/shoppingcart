@@ -375,6 +375,7 @@ model.getTokenFacebook = ()=>{
     .auth()
     .signInWithPopup(provider)
     .then((result) => {
+        console.log(auth.currentUser,'auth');
         console.log(result , 'result');
       /** @type {firebase.auth.OAuthCredential} */
       var credential = result.credential;
