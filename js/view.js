@@ -231,9 +231,9 @@ view.setScreenAtive = (screenName) => {
             })
 
             // bat su kien click google
-            // google.addEventListener('click',()=>{
-            //     model.getTokenGoogle()
-            // })
+            google.addEventListener('click',()=>{
+                model.getTokenGoogle()
+            })
             // bat su kien dang nhap bang facebook
             facebook.addEventListener('click' ,()=>{
                 model.getTokenFacebook()
