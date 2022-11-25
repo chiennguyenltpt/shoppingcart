@@ -361,18 +361,9 @@ model.getTokenFacebook = ()=>{
     fbProvider.addScope('public_profile', "email", "user_birthday")
     
     firebase.auth().signInWithPopup(fbProvider).then(function(result) {
-    var credential = result.credential;
-
+    var credential = result.credential.accessToken;
     // The signed-in user info.
     var user = result.user;
-
-    console.log(user);
-    console.log(user ,1);
-
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var accessToken = credential.accessToken;
-    console.log(accessToken, 'fb');
-    
     }).catch(function (error) {
         console.log(error);
     });
