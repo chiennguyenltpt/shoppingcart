@@ -368,6 +368,7 @@ model.getTokenFacebook = ()=>{
     var user = result.user;
     console.log(credential,111);
     console.log(user);
+    view.setScreenAtive('home')
     }).catch(function (error) {
         console.log(error);
     });
