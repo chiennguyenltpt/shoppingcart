@@ -367,6 +367,7 @@ model.getTokenFacebook = ()=>{
     // The signed-in user info.
     var user = result.user;
     console.log(credential,111);
+    console.log(user);
     }).catch(function (error) {
         console.log(error);
     });
