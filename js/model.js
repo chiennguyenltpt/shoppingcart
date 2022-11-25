@@ -356,22 +356,22 @@ model.getTokenGoogle = () => {
 
 }
 // dang nhap bang facebôk
-var fbProvider = new firebase.auth.FacebookAuthProvider()
+var credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
 model.getTokenFacebook = ()=>{
-    fbProvider.addScope( "email")
-    fbProvider.setCustomParameters({
-        'display': 'popup'
-      });
-    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
-    var credential = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    console.log(credential,111);
-    console.log(user);  
-    view.setScreenAtive('home')
-    }).catch(function (error) {
-        console.log(error);
-    });
+    firebase.auth()
+  .signInWithCredential(credential)
+  .then((result) => {
+    // Signed in
+    console.log(result);
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // ...
+  });
 }
 
 // model update password 
