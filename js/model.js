@@ -358,10 +358,8 @@ model.getTokenGoogle = () => {
 // dang nhap bang facebôk
 var fbProvider = new firebase.auth.FacebookAuthProvider()
 model.getTokenFacebook = ()=>{
-    fbProvider.addScope( "providerData")
-    fbProvider.setCustomParameters({
-        'display': 'popup'
-      });
+    // fbProvider.addScope( "email")
+    console.log(fbProvider,11);
     firebase.auth().signInWithPopup(fbProvider).then(function(result) {
     var credential = result.credential.accessToken;
     // The signed-in user info.
