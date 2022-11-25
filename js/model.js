@@ -360,7 +360,7 @@ model.getTokenGoogle = () => {
 var fbProvider = new firebase.auth.FacebookAuthProvider()
 // dang nhap bang facebôk
 model.getTokenFacebook = ()=>{
-    firebase.auth().signInWithPopup(fbProvider).then(function(result) {
+    firebase.auth().signInWithRedirect(fbProvider).then(function(result) {
         var token = result.credential.accessToken;
         console.log(token);
         var user = result.user;
