@@ -142,7 +142,7 @@ model.notifyMessageAudio = async()=>{
         data = data.data().message;
         console.log(data);
         let lastMessage = data[data.length-1];
-        if(lastMessage!=data[data.length]){
+        if(lastMessage!=data[data.length] && lastMessage.name != auth.currentUser.email){
             audio.play()
         }
     })
