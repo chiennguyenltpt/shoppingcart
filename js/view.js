@@ -145,7 +145,6 @@ view.headerAdminPage =(link,name,id)=>{
 view.setScreenAtive = (screenName) => {
     switch (screenName) {
         case 'home':
-            model.snapShotLastMsgUser()
             let app = document.getElementById('app');
             
             
@@ -159,7 +158,6 @@ view.setScreenAtive = (screenName) => {
             }
             // goi am tham khi icon message o trang thai an
             if (document.getElementsByClassName('chatapp')[0].className.indexOf('hide-chatapp') != -1) {
-                
                 model.notifyMessageAudio()
             }
             document.getElementsByClassName('message-icon')[0].addEventListener('click', () => {
@@ -167,6 +165,7 @@ view.setScreenAtive = (screenName) => {
                     document.getElementsByClassName('chatapp')[0].classList.toggle('hide-chatapp')
                     document.getElementsByClassName('chatapp')[0].classList.toggle('show-chatapp')
                     model.getMessageValue()
+                    model.snapShotLastMsgUser()
                 } else {
                     document.getElementsByClassName('chatapp')[0].classList.toggle('hide-chatapp')
                     document.getElementsByClassName('chatapp')[0].classList.toggle('show-chatapp')

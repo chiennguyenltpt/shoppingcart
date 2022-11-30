@@ -116,7 +116,7 @@ model.getMessageValue = async () => {
 // bat snapshot tin nhn cuoi
 model.snapShotLastMsgUser = async()=>{
     try {
-        
+       
         var userInfo = await db.collection('user').get()
         await db.collection("chatapp").doc(auth.currentUser.uid).onSnapshot((data=>{
             data =data.data().message
@@ -127,7 +127,8 @@ model.snapShotLastMsgUser = async()=>{
                 valueUser = userInfo.docs.filter((item)=>{
                   return  lastMessage.name == item.data().email
                 })
-            }
+                
+            }   
             view.addBotMessage(lastMessage.message,valueUser[0].data().link)    
         }))
 

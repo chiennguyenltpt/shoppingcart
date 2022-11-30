@@ -219,8 +219,8 @@ component.payment = `
                             </select>
                         </label>
                             <label>
-                            Zip code
-                            <input type="number" name="" class= 'infoUser'  placeholder="Zip code">
+                            Phone Number
+                            <input type="number" name="" class= 'infoUser'  placeholder="Phone number">
                         </label>
                     </div>
                 </form>
