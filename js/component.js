@@ -85,7 +85,7 @@ component.home = `
 <div class="content-item"  id ='content-item' ">
         ${layout}   
 </div> 
-<div class="chatapp">
+<div class="chatapp hide-chatapp">
         <div class="title-chatapp">Well come </div>
         <div class="content" id = 'content'>
         </div>

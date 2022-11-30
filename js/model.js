@@ -116,26 +116,36 @@ model.getMessageValue = async () => {
 // bat snapshot tin nhn cuoi
 model.snapShotLastMsgUser = async()=>{
     try {
-        let userInfo = await db.collection('user').get()
         
-         await db.collection("chatapp").doc(auth.currentUser.uid).onSnapshot((data=>{
+        var userInfo = await db.collection('user').get()
+        await db.collection("chatapp").doc(auth.currentUser.uid).onSnapshot((data=>{
             data =data.data().message
             let lastMessage = data[data.length-1]
-            console.log();
+            console.log(lastMessage)
             let   valueUser;
             if(lastMessage.name != auth.currentUser.email){
-                 valueUser = userInfo.docs.filter((item)=>{
+                valueUser = userInfo.docs.filter((item)=>{
                   return  lastMessage.name == item.data().email
                 })
             }
-            view.addBotMessage(lastMessage.message,valueUser[0].data().link)
-            
-
+            view.addBotMessage(lastMessage.message,valueUser[0].data().link)    
         }))
 
     } catch (error) {
         
     }
+};
+// hien am thanh tren thong bao nguoi dung
+model.notifyMessageAudio = async()=>{
+    let audio = new Audio('../audio/Nhac-chuong-tin-nhan-1-tieng-www_tiengdong_com.mp3')
+    await db.collection('chatapp').doc(auth.currentUser.uid).onSnapshot(data=>{
+        data = data.data().message;
+        console.log(data);
+        let lastMessage = data[data.length-1];
+        if(lastMessage!=data[data.length]){
+            audio.play()
+        }
+    })
 }
 
 // ham ben trong chat app admin

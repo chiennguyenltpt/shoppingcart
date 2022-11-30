@@ -128,10 +128,13 @@ view.renderUserChatAdmin = (value)=>{
     let layout = document.querySelector("aside ul li")
     let listUser = document.createElement('div');
     listUser.innerHTML =value;
-    layout.append(listUser)
+    layout.appendChild(listUser)
 }
 // click hien thong tin nguoi dung tren admin page
 view.headerAdminPage =(link,name,id)=>{
+    if(link==null){
+        link= 'https://firebasestorage.googleapis.com/v0/b/appbanhang-4d425.appspot.com/o/manhchienltpt%40gmail.com%2Fanh-gai-xinh-cute-50.jpeg?alt=media&token=069f32f4-bc5f-4243-b899-8a0f57d62a3c'
+    }
     document.querySelector('header img').src = link
     document.querySelector('header h2').innerHTML = `Chat with ${name}`
     document.querySelector('header h2').id = id
@@ -145,17 +148,28 @@ view.setScreenAtive = (screenName) => {
             model.snapShotLastMsgUser()
             let app = document.getElementById('app');
             
+            
             document.getElementById('user').innerHTML = auth.currentUser.displayName;
             app.innerHTML = component.home;
             
             // click hien thi chat boxx
             model.realTimeTotal()
+            if(auth.currentUser.email == "manhchienltpt@gmail.com"){
+                document.getElementsByClassName('message-icon')[0].style.display = 'none'
+            }
+            // goi am tham khi icon message o trang thai an
+            if (document.getElementsByClassName('chatapp')[0].className.indexOf('hide-chatapp') != -1) {
+                
+                model.notifyMessageAudio()
+            }
             document.getElementsByClassName('message-icon')[0].addEventListener('click', () => {
-                if (document.getElementsByClassName('chatapp')[0].style.visibility == 'hidden') {
-                    document.getElementsByClassName('chatapp')[0].style.visibility = 'visible'
+                if (document.getElementsByClassName('chatapp')[0].className.indexOf('hide-chatapp') != -1) {
+                    document.getElementsByClassName('chatapp')[0].classList.toggle('hide-chatapp')
+                    document.getElementsByClassName('chatapp')[0].classList.toggle('show-chatapp')
                     model.getMessageValue()
                 } else {
-                    document.getElementsByClassName('chatapp')[0].style.visibility = 'hidden'
+                    document.getElementsByClassName('chatapp')[0].classList.toggle('hide-chatapp')
+                    document.getElementsByClassName('chatapp')[0].classList.toggle('show-chatapp')
                     content.innerHTML = ''
                 }
             })
