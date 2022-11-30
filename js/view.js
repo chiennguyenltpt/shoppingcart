@@ -142,19 +142,18 @@ view.headerAdminPage =(link,name,id)=>{
 view.setScreenAtive = (screenName) => {
     switch (screenName) {
         case 'home':
+            model.snapShotLastMsgUser()
             let app = document.getElementById('app');
             
             document.getElementById('user').innerHTML = auth.currentUser.displayName;
             app.innerHTML = component.home;
-             
+            
             // click hien thi chat boxx
             model.realTimeTotal()
             document.getElementsByClassName('message-icon')[0].addEventListener('click', () => {
                 if (document.getElementsByClassName('chatapp')[0].style.visibility == 'hidden') {
                     document.getElementsByClassName('chatapp')[0].style.visibility = 'visible'
                     model.getMessageValue()
-                    model.snapShotLastMsgUser()
-
                 } else {
                     document.getElementsByClassName('chatapp')[0].style.visibility = 'hidden'
                     content.innerHTML = ''

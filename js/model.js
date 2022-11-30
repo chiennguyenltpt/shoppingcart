@@ -127,9 +127,8 @@ model.snapShotLastMsgUser = async()=>{
                  valueUser = userInfo.docs.filter((item)=>{
                   return  lastMessage.name == item.data().email
                 })
-                console.log(valueUser[0].data());
-                view.addBotMessage(lastMessage.message,valueUser[0].data().link)
             }
+            view.addBotMessage(lastMessage.message,valueUser[0].data().link)
             
 
         }))
