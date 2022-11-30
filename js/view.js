@@ -26,6 +26,7 @@ view.logOut = () => {
     document.getElementById('logout').addEventListener('click', () => {
         document.getElementById('user').innerHTML = ''
         avartar.src = "./image/avatar-null.png"
+        admin.style.visibility='hidden'
         firebase.auth().signOut();
     });
 };
@@ -33,19 +34,20 @@ view.logOut();
 
 // them the khi nguoi dung nhap vao
 view.addUserMessage = (message) => {
-    var html = `<div class=" box box1">
+    let layOut = document.createElement('div')
+    layOut.innerHTML= `<div class = "box box1">
                     <p class="user">${message}</p><img src="${auth.currentUser.photoURL}" id='img-user'>
                 </div>`
-    document.getElementsByClassName('content')[0].innerHTML += html
+    document.getElementsByClassName('content')[0].appendChild(layOut)
 }
 
 // the khi nguoi thu2 nhap vao
 view.addBotMessage = (message,url) => {
-    var html = ` <div class="box box2">
-                    <img src="${url}" id='img-user'><p class="bot">${message}</p>
-                </div>
-                `
-    document.getElementsByClassName('content')[0].innerHTML += html
+    let layOut = document.createElement('div')
+    layOut.innerHTML= ` <div class = "box box2">
+    <img src="${url}" id='img-user'><p class="bot">${message}</p>
+        </div>`
+    document.getElementsByClassName('content')[0].appendChild(layOut)
 };
 // ham show gia tien trong checkout
 view.totalCheckOut = (value)=>{
@@ -82,7 +84,57 @@ view.showInfoName = (classitem,value)=>{
 // ham lay anh de apdate avatar
 view.updateAvatar = ()=>{
     let avatarUrl = document.querySelector('.img-user')
-    avatarUrl.src = auth.currentUser.photoURL;
+    avatarUrl.src = auth.currentUser.photoURL; 
+}
+view.admin = ()=>{
+    let admin = document.querySelector('.admin')
+    
+    if(auth.currentUser.email=="manhchienltpt@gmail.com"){
+        
+        admin.style.visibility='visible'
+    }else{
+        admin.style.visibility = 'hidden'
+    }
+}
+// ham view render comment
+view.renderComment =(data,value)=>{
+    let layoutComment = document.getElementById('cmt');
+    const cmt_layout = document.createElement('div');
+    cmt_layout.innerHTML = `<img src="${value}" alt="">
+    <p>${data}</p> `
+    cmt_layout.classList.add('comment-text')
+    layoutComment.prepend(cmt_layout)
+     
+}
+// bat su kien addmin icon
+admin.addEventListener('click' ,()=>{
+    view.setScreenAtive('adminchat')
+    model.getMessageValue() 
+    model.getUserInChatApp()
+})
+// render danh sach nguoi dung khi cvao boxchat admin
+view.UserOfAdminPage = (url,name,id)=>{
+    return `<div class = 'list-user' id ="${id}">
+        <img class = "img-adminChat" src=${url} alt="">
+        <h2>${name}</h2>
+        <h3>
+            <span class="status orange"></span>
+            offline
+        </h3> 
+    </div>`
+}
+// render danh sach nguoi dung trong admin page 
+view.renderUserChatAdmin = (value)=>{
+    let layout = document.querySelector("aside ul li")
+    let listUser = document.createElement('div');
+    listUser.innerHTML =value;
+    layout.append(listUser)
+}
+// click hien thong tin nguoi dung tren admin page
+view.headerAdminPage =(link,name,id)=>{
+    document.querySelector('header img').src = link
+    document.querySelector('header h2').innerHTML = `Chat with ${name}`
+    document.querySelector('header h2').id = id
 }
 
 
@@ -91,17 +143,21 @@ view.setScreenAtive = (screenName) => {
     switch (screenName) {
         case 'home':
             let app = document.getElementById('app');
+            
             document.getElementById('user').innerHTML = auth.currentUser.displayName;
             app.innerHTML = component.home;
+             
             // click hien thi chat boxx
             model.realTimeTotal()
             document.getElementsByClassName('message-icon')[0].addEventListener('click', () => {
                 if (document.getElementsByClassName('chatapp')[0].style.visibility == 'hidden') {
                     document.getElementsByClassName('chatapp')[0].style.visibility = 'visible'
                     model.getMessageValue()
+                    model.snapShotLastMsgUser()
 
                 } else {
                     document.getElementsByClassName('chatapp')[0].style.visibility = 'hidden'
+                    content.innerHTML = ''
                 }
             })
             // hien ten nguoi dung tren box chat
@@ -133,7 +189,6 @@ view.setScreenAtive = (screenName) => {
                     }
                     document.querySelector('.menu ul li span').innerHTML = Number(document.querySelector('.menu ul li span').innerHTML) + 1
                     controller.card(dataCard);
-
                 })
             }
             // an hien thanh thong bao
@@ -178,13 +233,14 @@ view.setScreenAtive = (screenName) => {
                     let dataDetail = {
                         name:name[i].innerHTML,
                         price: price[i].innerHTML,
-                        img:Img[i].src
+                        img:listData[i].img,
                     }
+
                     view.setScreenAtive('commentPage')
                     view.renderDetailProduct(dataDetail)
+                    model.getValueComment(dataDetail.name)
                 })
             }
-
             break;
 
         // man dang ky
@@ -238,13 +294,13 @@ view.setScreenAtive = (screenName) => {
             facebook.addEventListener('click' ,()=>{
                 model.getTokenFacebook()
             })
-
             break;
 
         case 'purchase':
             document.getElementById('app').innerHTML = component.purchase;
             model.getShoppingValue()
             view.showCard = (data) => {
+                console.log(data);
                 let layout = ''
                 for (i = 0; i < data.length; i++) {
                     layout += ` <div class="cart-row cart-hidden">
@@ -433,15 +489,110 @@ view.setScreenAtive = (screenName) => {
                 controller.resetEmail(resultValue)
             })
             break;
-        case "commentPage" :
+        case "commentPage":
                 document.getElementById('app').innerHTML =component.commentPage;
+                let mainImg = document.querySelector('.img-container img')
+                let mainName = document.querySelector('.product-name')
+                let mainPrice = document.querySelector('.product-price')
                 view.renderDetailProduct = (data)=>{
-                    console.log(data);
-                    document.querySelector('.text-detail').innerHTML = data.name;
-                    console.log(listData);
+                    mainImg.src = data.img;
+                    mainName.innerHTML =data.name;
+                    mainPrice.innerHTML = data.price
                 }
+                // su kien click vao add to cảrt
+                let addCart = document.querySelector('.add-cart-btn')
+                addCart.addEventListener('click',()=>{
+                    let valueProductCommentPage = {
+                        name:mainName.innerHTML,
+                        price:mainPrice.innerHTML
+                    }
+                    model.pushValueCard(valueProductCommentPage);
+                })
+                // bat su kien buy now
+                let buyNow = document.querySelector('.buy-now-btn');
+                buyNow.addEventListener('click',()=>{
+                    view.setScreenAtive('payment')
+                    let valueProductCommentPage = {
+                        name:mainName.innerHTML,
+                        price:mainPrice.innerHTML
+                    }
+                    model.pushValueCard(valueProductCommentPage);
+                })
+                // su kien comment here;
+                let comment = document.querySelector('.commet-page input')
+                let btn_send = document.querySelector(".commet-page button");
+                btn_send.addEventListener('click',()=>{
+                    let dataPushCommentValue = {
+                        comment:comment.value,
+                        name:mainName.innerHTML,
+                    }
+                    controller.commentValue(dataPushCommentValue)
+                    
+                    
+                    comment.value = ''
+                   
+                })
+
             break;
-        default:
+        case 'adminchat':
+            document.getElementById('app').innerHTML = component.adminChat;
+            
+            view.renderMessageAdmin = (classname,name,time,message)=>{
+            let layoutComment = document.getElementById('chat');
+            const cmt_layout = document.createElement('li');
+            cmt_layout.innerHTML = `    <li>
+            <div class="entete">
+                <h3>${time}</h3>
+                <h2>${name}</h2>
+                <span class="status blue"></span>
+            </div>
+            <div class="triangle"></div>
+            <div class="message">
+            ${message}
+            </div>
+                </li> `
+            cmt_layout.classList.add(classname)
+            layoutComment.appendChild(cmt_layout)
+            }
+
+            view.renderMessageUser =(classname,name,time,message)=>{
+                let layoutComment = document.getElementById('chat');
+                const cmt_layout = document.createElement('li');
+                cmt_layout.innerHTML = `<li>
+                <div class="entete">
+                <span class="status green"></span>
+                <h2>${name}</h2>
+                    <h3>${time}</h3>
+                </div>
+                <div class="triangle"></div>
+                <div class="message">
+                    ${message}
+                </div>
+                    </li> `
+                cmt_layout.classList.add(classname)
+                layoutComment.appendChild(cmt_layout)
+            }
+            textArea.addEventListener('keydown',(e)=>{
+                if(e.key=="Enter"){
+                    let id = document.querySelector('header h2').getAttribute('id')
+                    if(textArea.value!=""){
+                       
+                        view.renderMessageAdmin('me',"Admin",new Date().toLocaleString(),textArea.value)
+                        model.pushMessageAdmin(id,textArea.value)
+                        textArea.value=""
+                        chat.scrollTop = chat.scrollHeight
+                    }
+                }
+            })
+
+
+            
+    
+            
+                
+            break
+            default:
+
             break;
     }
 }

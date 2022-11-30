@@ -6,6 +6,7 @@ window.onload = () => {
                 view.setScreenAtive('home')
                 view.dataUser(auth.currentUser.displayName)
                 view.avatar()
+                view.admin()
             }
         } else{
             view.setScreenAtive('login');

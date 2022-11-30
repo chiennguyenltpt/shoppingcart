@@ -106,7 +106,7 @@ controller.quantity = (data)=>{
         sumTotal +=data[i].total; 
     }
     document.querySelector('.menu ul li span').innerHTML = sumTotal
-}
+};
 
 // render ra cac tinh thanh
 
@@ -172,8 +172,17 @@ controller.changePassword = (data)=>{
 
     if(data.oldPassword.length>8 && data.newPassword.length>8 &&data.newPassword==data.confirmPassword){
         model.updatePassword(data)
+        console.log(1,'hihi');
     }
 }
+
+// du lieu trang commen
+controller.commentValue = (data)=>{
+    if (data.comment!="") {
+        model.pushValueComment(data)
+        view.renderComment(data.comment,auth.currentUser.photoURL)
+    }
+};
 
 
 
@@ -197,7 +206,7 @@ controller.changePassword = (data)=>{
 //  console.log(arr,111);
 
 
-// lay gia tri tu trang reset ;
+// lay gia tri tu trang reset mk;
 controller.resetEmail = (data)=>{
     
     if(data==''){

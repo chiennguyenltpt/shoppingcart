@@ -30,7 +30,7 @@ const listData = [
     { name: 'Iphone25', price: '$064', img: '../image/iphone1.png' },
     { name: 'Iphone26', price: '$854', img: '../image/iphone7-removebg-preview (1).png' },
     { name: 'Iphone27', price: '$765', img: "../image/iphone4-removebg-preview.png" },
-    { name: 'Iphone28', price: '$799', img: 'image/iphone1.png' },
+    { name: 'Iphone28', price: '$799', img: 'image/iphone1.png' }, 
     { name: 'Iphone29', price: '$976', img: '../image/iphone2-removebg-preview (1).png' },
     { name: 'Iphone30', price: '$868', img: '../image/iphone4-removebg-preview.png' },
     { name: 'Iphone31', price: '$967', img: '../image/iphone7-removebg-preview (1).png' },
@@ -83,7 +83,7 @@ for (let i = 0; i < listData.length; i++) {
 
 component.home = `
 <div class="content-item"  id ='content-item' ">
-        ${layout}
+        ${layout}   
 </div> 
 <div class="chatapp">
         <div class="title-chatapp">Well come </div>
@@ -302,7 +302,7 @@ component.slide = `  <div class= 'screen-slide'>
             <button>See More</button>
         </div>
     </div>
-    <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
+        <div class="item-slide" style="background-image: url(../image/avatar.jpeg)">
         <div class="content1">
             <div class="name-slide">Iphone14 Pro Max</div>
             <div class="text">Dinh cao cong nghe</div>
@@ -354,7 +354,7 @@ component.showInfo =`
 <div class="wrapper">
 <div class="left">
     <img class="img-user" src="../image/avatar.jpeg" 
-    alt="user" width="200"> 
+    alt="user"> 
     <h4>Alexander Dade</h4>
      <p>Anh Công Nhân</p>
 </div>
@@ -467,41 +467,105 @@ component.updateInfo = `
 
 
 
-component.commentPage = `<div class="main-detail">
-<div class="div1"></div>
-<div class="div2"></div>
-<div class="div3"></div>
-<div class="div4"></div>
-
-<div class="maintain">
-    <div class="img-detail">
-        <div class="img-product">
-            <img src="../image/iphone4-removebg-preview.png" alt="">
+component.commentPage = `
+<div class = "main-wrapper">
+        <div class = "container">
+            <div class = "product-div">
+                <div class = "product-div-left">
+                    <div class = "img-container">
+                        <img src = "../image/iphone1.png" alt = "watch">
+                    </div>
+                    <div class = "hover-container">
+                        <div><img src = "../image/iphone7-removebg-preview (1).png"></div>
+                        <div><img src = "../image/iphone8-removebg-preview.png"></div>
+                        <div><img src = "../image/iphone9.png"></div>
+                        <div><img src = "../image/iphone4-removebg-preview.png"></div>
+                       
+                    </div>
+                </div>
+                <div class = "product-div-right">
+                    <span class = "product-name">(New) Analog Watch - For Men</span>
+                    <span class = "product-price">$ 50.25</span>
+                    <div class = "product-rating">
+                        <span><i class = "fas fa-star"></i></span>
+                        <span><i class = "fas fa-star"></i></span>
+                        <span><i class = "fas fa-star"></i></span>
+                        <span><i class = "fas fa-star"></i></span>
+                        <span><i class = "fas fa-star-half-alt"></i></span>
+                        <span>(350 ratings)</span>
+                    </div>
+                    <p class = "product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae animi ad minima veritatis dolore. Architecto facere dignissimos voluptate fugit ratione molestias quis quidem exercitationem voluptas.</p>
+                    <div class = "btn-groups">
+                        <button type = "button" class = "add-cart-btn"><i class = "fas fa-shopping-cart"></i>add to cart</button>
+                        <button type = "button" class = "buy-now-btn"><i class = "fas fa-wallet"></i>buy now</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="text-detail">
-        IPhoneX
-    </div>
-    <div class="feedback">
-                    <i class="fa-regular fa-star text-yellow"></i>
-                    <i class="fa-regular fa-star text-yellow"></i>
-                    <i class="fa-regular fa-star text-yellow"></i>
-                    <i class="fa-regular fa-star text-yellow"></i>
-                    <i class="fa-regular fa-star"></i>
-    </div>
-    <div class="choice-color">
-        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
-        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
-        <div><img src="../image/iphone4-removebg-preview.png" alt=""> </div>
-    </div>
-    <div class="comment-text">
-        <input type="text"><button>Comment</button>
-        <div class="main-content">
 
+        <div class="commet-page">
+            <input type="text" > <button>send</button>
+            <div class="cmt" id = 'cmt'>
+            
+                <div class="comment-text">
+                    <img src="../image/avatar-null.png" alt="">
+                    <p>cam on ban</p> 
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="buynow">
-        <button>buynow</button>
-    </div>
-</div>
+    </div>`
+
+
+component.adminChat = `<div id="container1">
+<aside>
+    <header>
+        <input type="text" placeholder="search">
+    </header>
+    <ul>
+        <li>
+
+        </li>   
+ 
+    </ul>
+</aside>
+<main id='main-chat'>
+    <header>
+        <img id = "imgAdminChat"  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+        <div>
+            <h2 id=''>Chat with Vincent Porter</h2>
+            <h3>already 1902 messages</h3>
+        </div>
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+    </header>
+    <ul id="chat">
+        <li class="you">
+            <div class="entete">
+            <span class="status green"></span>
+            <h2>Vincent</h2>
+                <h3>10:12AM, Today</h3>
+            </div>
+            <div class="triangle"></div>
+            <div class="message">
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+            </div>
+        </li>
+        <li class="me">
+            <div class="entete">
+                <h3>10:12AM, Today</h3>
+                <h2>Vincent</h2>
+                <span class="status blue"></span>
+            </div>
+            <div class="triangle"></div>
+            <div class="message">
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+            </div>
+        </li>
+
+    </ul>
+    <footer>
+        <textarea id='textArea' placeholder="Type your message"></textarea>
+
+        <a>Send</a>
+    </footer>
+</main>
 </div>`

@@ -17,11 +17,11 @@ model.register = async (data) => {
 
     try {
         await auth.createUserWithEmailAndPassword(data.email, data.password);
-         auth.currentUser.sendEmailVerification();
+        auth.currentUser.sendEmailVerification();
         ShowSuccessToast('Success')
-     await   db.collection('user').doc(auth.currentUser.uid).set(
+        await db.collection('user').doc(auth.currentUser.uid).set(
             data
-            )
+        )
         view.setScreenAtive('login')
     } catch (error) {
         ShowErrorToast(error.message)
@@ -33,7 +33,6 @@ model.login = async (data) => {
     try {
         let infoDb = await db.collection("user").get()
         let username;
-        console.log(infoDb)
         infoDb.docs.filter((doc) => {
             if ((doc.data().email == data.email)) {
                 username = doc.data().name
@@ -41,10 +40,12 @@ model.login = async (data) => {
         });
         let response = await auth.signInWithEmailAndPassword(data.email, data.password);
         console.log(auth.currentUser.emailVerified);
-        if (auth.currentUser.emailVerified ==true && response) {
+        if (auth.currentUser.emailVerified == true && response) {
             ShowSuccessToast("Login Success")
-            //  view.dataUser(auth.currentUser.displayName)
-             view.setScreenAtive('home')
+            view.admin()
+            view.dataUser(auth.currentUser.displayName)
+            view.setScreenAtive('home')
+
         };
 
         await auth.currentUser.updateProfile({
@@ -56,11 +57,17 @@ model.login = async (data) => {
     }
 };
 
+
+
+
+
+
+
 model.chatapp = async (data) => {
     try {
-        let response = await db.collection('chatapp').doc('chatbox').get()
+        let response = await db.collection('chatapp').doc(auth.currentUser.uid).get()
         if (response.exists == false) {
-            db.collection('chatapp').doc('chatbox').set({
+            db.collection('chatapp').doc(auth.currentUser.uid).set({
                 message: [{
                     name: auth.currentUser.email,
                     message: data.message,
@@ -68,8 +75,7 @@ model.chatapp = async (data) => {
                 }]
             })
         } else {
-
-            await db.collection('chatapp').doc('chatbox').update({
+            await db.collection('chatapp').doc(auth.currentUser.uid).update({
                 message: firebase.firestore.FieldValue.arrayUnion({
                     name: auth.currentUser.email,
                     message: data.message,
@@ -83,47 +89,143 @@ model.chatapp = async (data) => {
 }
 model.chatapp()
 
-model.getMessageValue = async (data) => {
+model.getMessageValue = async () => {
     try {
-        let response = await db.collection("chatapp").doc("chatbox").get()
-        let userInfo = await db.collection('user').get()
-        let valueSum = userInfo.docs
+        let response = await db.collection("chatapp").doc(auth.currentUser.uid).get()
         let result = response.data().message
         for (i in result) {
-            if (auth.currentUser.email == result[i].name) {
+            let userInfo = await db.collection('user').get()
+            if (result[i].name == auth.currentUser.email ){
                 view.addUserMessage(result[i].message)
-            } else {
-                if (i == result.length - 1) {
-                    break
-                } else {
-                    for(let j =0;j<valueSum.length;j++){
-                        if(valueSum[j].data().email==result[i].name){
-                            view.addBotMessage(result[i].message,valueSum[j].data().link)
-                        }
+            }else {
+                    for( let j in userInfo.docs){                
+                    if(result[i].name==userInfo.docs[j].data().email){
+                        var url = userInfo.docs[j].data().link
                     }
                 }
+                view.addBotMessage(result[i].message,url)
             }
+            
         }
-        await db.collection("chatapp")
-            .onSnapshot((value) => {
-                let message = value.docs.map((doc) => ({ ...doc.data() }))
-                let messageValue = message[0].message
-                let lastMessage = messageValue[messageValue.length - 1]
-                if (auth.currentUser.email != lastMessage.name) {
-                    // view.addBotMessage(lastMessage.message)
-                    for(let j =0;j<valueSum.length;j++){
-                        if(valueSum[j].data().email==lastMessage.name){
-                            view.addBotMessage(lastMessage.message,valueSum[j].data().link)
-                        }
-                    }
-                }
-            });
+        
     } catch (error) {
         console.log(error.message);
     }
+};
+
+// bat snapshot tin nhn cuoi
+model.snapShotLastMsgUser = async()=>{
+    try {
+        let userInfo = await db.collection('user').get()
+        
+         await db.collection("chatapp").doc(auth.currentUser.uid).onSnapshot((data=>{
+            data =data.data().message
+            let lastMessage = data[data.length-1]
+            console.log();
+            let   valueUser;
+            if(lastMessage.name != auth.currentUser.email){
+                 valueUser = userInfo.docs.filter((item)=>{
+                  return  lastMessage.name == item.data().email
+                })
+                console.log(valueUser[0].data());
+                view.addBotMessage(lastMessage.message,valueUser[0].data().link)
+            }
+            
+
+        }))
+
+    } catch (error) {
+        
+    }
 }
+
+// ham ben trong chat app admin
+model.getUserInChatApp = async () => {
+    let responseUserChatApp = await db.collection('chatapp').get()
+    for (let i in responseUserChatApp.docs) {
+        let userInfo = await db.collection('user').get()
+        for (let j in userInfo.docs) {
+            if (userInfo.docs[j].id == responseUserChatApp.docs[i].id) {
+                let listUserHtml = view.UserOfAdminPage(userInfo.docs[j].data().link, userInfo.docs[j].data().name, responseUserChatApp.docs[i].id)
+                view.renderUserChatAdmin(listUserHtml)
+
+            }
+        }
+        await db.collection('chatapp').doc(responseUserChatApp.docs[i].id).onSnapshot(value => {
+            value = value.data().message;
+            let lastMessage = value[value.length - 1]
+            if (lastMessage.name != "manhchienltpt@gmail.com") {
+                view.renderMessageUser("you", lastMessage.name, lastMessage.time, lastMessage.message)
+                chat.scrollTop = chat.scrollHeight
+            }
+
+        })
+    }
+    let listUserRender = document.getElementsByClassName('list-user');
+    let link = document.querySelectorAll(".list-user img");
+    let nameUserClick = document.querySelectorAll('.list-user h2')
+    for (let i = 0; i < listUserRender.length; i++) {
+        listUserRender[i].addEventListener('click', async () => {
+            let id = listUserRender[i].getAttribute('id')
+            view.headerAdminPage(link[i].src, nameUserClick[i].innerHTML, id)
+            chat.innerHTML = ''
+            model.adminChat(id)
+        })
+    }
+
+}
+
+// lay du lieu tren firebase chat de render ra admin chat
+model.adminChat = async (id) => {
+    let responseData = await db.collection('chatapp').doc(id).get()
+    let result = responseData.data().message
+
+    for (let i = 0; i < result.length; i++) {
+        if (result[i].name == "manhchienltpt@gmail.com") {
+            view.renderMessageAdmin('me', 'Admin', result[i].time, result[i].message)
+        } else {
+            view.renderMessageUser("you", result[i].name, result[i].time, result[i].message)
+        }
+    }
+}
+// day du lieu chat trong page admin
+model.pushMessageAdmin = async (id, message) => {
+    console.log(id, message);
+    try {
+        await db.collection('chatapp').doc(id).update({
+            message: firebase.firestore.FieldValue.arrayUnion({
+                name: 'manhchienltpt@gmail.com',
+                message: message,
+                "time": new Date().toLocaleString()
+            })
+        })
+    } catch (error) {
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // model day du lieu cua card
 model.pushValueCard = async (data) => {
+
     try {
         let response = await db.collection('shopping').doc(auth.currentUser.email).get()
         if (response.exists == false || response.data().product.length == 0) {
@@ -315,7 +417,7 @@ model.pushValueUserBank = async (data) => {
             })
         }
         ShowSuccessToast("You Payed success")
-         
+
     } catch (error) {
         console.log(error.message);
     }
@@ -350,7 +452,7 @@ var ggProvider = new firebase.auth.GoogleAuthProvider();
 model.getTokenGoogle = () => {
     firebase.auth().signInWithPopup(ggProvider).then(function (result) {
         var token = result.credential.accessToken;
-        var user = result.user; 
+        var user = result.user;
     }).catch(function (error) {
         console.log(error);
     });
@@ -358,7 +460,7 @@ model.getTokenGoogle = () => {
 }
 // dang nhap bang facebôk
 var provider = new firebase.auth.FacebookAuthProvider()
-model.getTokenFacebook = ()=>{
+model.getTokenFacebook = () => {
     // fbProvider.addScope( "email")
     // console.log(fbProvider,'aa');
     // firebase.auth().signInWithPopup(fbProvider).then(function(result) {
@@ -373,40 +475,41 @@ model.getTokenFacebook = ()=>{
 
     console.log(provider);
     firebase
-    .auth()
-    .signInWithPopup(provider)
-    .then((result) => {
-        console.log(auth.currentUser,'auth');
-        console.log(result , 'result');
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+            console.log(auth.currentUser, 'auth');
+            console.log(result, 'result');
+            /** @type {firebase.auth.OAuthCredential} */
+            var credential = result.credential;
 
-      // The signed-in user info.
-      var user = result.user;
-        console.log(user);
-        view.setScreenAtive('home')
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var accessToken = credential.accessToken;
-      console.log(accessToken,"44444444");
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
+            // The signed-in user info.
+            var user = result.user;
+            console.log(user);
+            view.setScreenAtive('home')
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var accessToken = credential.accessToken;
+            console.log(accessToken, "44444444");
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
 
-      // ...
-    });
-}
+            // ...
+        });
+};
 
 // model update password 
 model.updatePassword = async (data) => {
 
     let response = await db.collection('user').doc(auth.currentUser.uid).get()
     if (data.oldPassword == response.data().password) {
+
         let user = auth.currentUser
         await firebase.auth()
             .signInWithEmailAndPassword(user.email, data.oldPassword)
@@ -477,7 +580,7 @@ model.pushValueImgToStorage = async (data) => {
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then(url => {
             console.log(url);
-             db.collection('user').doc(auth.currentUser.uid).update({link:url})
+            db.collection('user').doc(auth.currentUser.uid).update({ link: url })
             auth.currentUser.updateProfile({
                 photoURL: url
             });
@@ -499,3 +602,55 @@ model.getUrlStorage = async () => {
 
     }
 }
+// day du lieu len tren firebase
+model.pushValueComment = async (data) => {
+    try {
+        let response = await db.collection('comment').doc(data.name).get()
+        if (response.exists == false) {
+            db.collection('comment').doc(data.name).set({
+                comment: [{
+                    email: auth.currentUser.email,
+                    comment: data.comment,
+                    "time": new Date().toLocaleString()
+                }]
+            })
+        } else {
+            await db.collection('comment').doc(data.name).update({
+                comment: firebase.firestore.FieldValue.arrayUnion({
+                    email: auth.currentUser.email,
+                    comment: data.comment,
+                    "time": new Date().toLocaleString()
+                })
+            })
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+// lay du lieu comment
+model.getValueComment = async (data) => {
+    console.log(data);
+    let response = await db.collection('comment').get()
+
+    let result = response.docs
+    for (let i in result) {
+        if (result[i].id == data) {
+            let resultName = await db.collection('comment').doc(data).get()
+            let commentValue = resultName.data().comment
+            for (let j in commentValue) {
+                if (commentValue[j].email == auth.currentUser.email) {
+                    view.renderComment(commentValue[j].comment, auth.currentUser.photoURL)
+                } else {
+                    let img = await db.collection('user').get()
+                    var link = img.docs
+                    for (let i in link) {
+                        if (commentValue[j].email == link[i].data().email) {
+                            view.renderComment(commentValue[j].comment, link[i].data().link)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+};
