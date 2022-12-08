@@ -29,7 +29,7 @@ model.register = async (data) => {
 };
 
 
-model.login = async (data) => {
+model.login = async (data) => { 
     try {
         let infoDb = await db.collection("user").get()
         let username;

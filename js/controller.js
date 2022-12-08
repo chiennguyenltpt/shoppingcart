@@ -4,7 +4,7 @@ controller.register =(dataUser)=>{
         view.showError('name')
         view.showMessageError('name','name can not be blank!!')
         setTimeout(()=> view.offError('name'),2000)
-    }else if (dataUser.name.length<=8){
+    }else if (dataUser.name.length<8){
         view.showError('name')
         view.showMessageError('name','name must have more than 8 character!!')
         setTimeout(()=> view.offError('name'),2000)
@@ -23,7 +23,7 @@ controller.register =(dataUser)=>{
         view.showError('password')
         view.showMessageError('password','password can not be blank!!')
         setTimeout(()=> view.offError('password'),2000)
-    }else if (dataUser.password.length<=8){
+    }else if (dataUser.password.length<8){
         view.showError('password')
         view.showMessageError('password','password must have more than 8 character!!')
         setTimeout(()=> view.offError('password'),2000)
@@ -32,7 +32,7 @@ controller.register =(dataUser)=>{
         view.showError('confirmPassword')
         view.showMessageError('confirmPassword','confirmPassword can not be blank!!')
         setTimeout(()=> view.offError('confirmPassword'),2000)
-    }else if (dataUser.confirmPassword.length<=8){
+    }else if (dataUser.confirmPassword.length<8){
         view.showError('confirmPassword')
         view.showMessageError('confirmPassword','confirmPassword must have more than 8 character!!')
         setTimeout(()=> view.offError('confirmPassword'),2000)
@@ -61,13 +61,13 @@ controller.login = (dataLogin)=>{
         view.showError('password')
         view.showMessageError('password','password can not be blank!!')
         setTimeout(()=> view.offError('password'),2000)
-    }else if (dataLogin.password.length<=8){
+    }else if (dataLogin.password.length<8){
         view.showError('password')
         view.showMessageError('password','password must have more than 8 character!!')
         setTimeout(()=> view.offError('password'),2000)
     };
     if(dataLogin.email!='' &&(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/).test(dataLogin.email)
-    && dataLogin.password!='' && dataLogin.password.length>8) {
+    && dataLogin.password!='' && dataLogin.password.length>=8) {
         model.login(dataLogin)
     }
 };
