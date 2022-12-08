@@ -120,12 +120,12 @@ component.register = `
         </div>
         <div class="password item">
             <label for="password">password</label><br>
-            <input type="text" name="password" placeholder="password"><br>
+            <input type="password" name="password" placeholder="password"><br>
             <small>Error</small>
         </div>
         <div class="confirmPassword item">
             <label for="confirmPassword">confirmPassword</label><br>
-            <input type="text" name="confirmPassword" placeholder="confirmPassword"><br>
+            <input type="password" name="confirmPassword" placeholder="confirmPassword"><br>
             <small>Error</small>
         </div>
     
@@ -153,7 +153,7 @@ component.login = `
         </div>
         <div class="password item">
             <label for="password">password</label><br>
-            <input type="text" name="password" placeholder="password" ><br>
+            <input type="password" name="password" placeholder="password" ><br>
             <small>Error</small>
         </div>
     
